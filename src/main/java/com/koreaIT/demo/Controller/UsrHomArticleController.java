@@ -16,21 +16,31 @@ public class UsrHomArticleController {
 	List<Article> articles;
 	
 	int lastArticleId;
+	int testcaseCnt = 10;
 	
 	UsrHomArticleController(){
 		this.articles = new ArrayList<>();
 		this.lastArticleId = 0;
+		makeTestData();
+	}
+	
+	private Article writeArticle(int id, String title, String body) {
+		Article article = new Article(id,title,body);
+		articles.add(article);
+		
+		return article;
+	}
+	
+	private void makeTestData() {
+		for(int i = 1; i <= testcaseCnt; i++) {
+			writeArticle(++this.lastArticleId,"내용 " + i,"내용 " + i);
+		}
 	}
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
 	public Article doWrite(String title, String body) {
-		
-		this.lastArticleId++;
-		
-		Article article = new Article(this.lastArticleId,title,body);
-		
-		articles.add(article);
+		Article article = writeArticle(++this.lastArticleId, title, body);
 		
 		return article;
 	}
