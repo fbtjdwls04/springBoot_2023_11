@@ -31,6 +31,19 @@ public class UsrHomArticleController {
 		return getArticles();
 	}
 	
+	@RequestMapping("/usr/article/showDetail")
+	@ResponseBody
+	public String showDetail(int id) {
+		
+		Article article = getArticleById(id);
+		
+		if(article == null) {
+			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
+		}
+		
+		return String.format("번호 : %d <br/> 제목 : %s <br/> 내용 : %s",article.getId(), article.getTitle(), article.getBody());
+	}
+	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
 	public Article doWrite(String title, String body) {
@@ -47,7 +60,7 @@ public class UsrHomArticleController {
 		Article article = getArticleById(id);
 		
 		if(article == null) {
-			return "<script>alert('해당 게시물은 존재하지 않습니다.'); location.replace('showList');</script>";
+			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
 		}
 		
 		modifyArticle(article, title, body);
@@ -62,7 +75,7 @@ public class UsrHomArticleController {
 		Article article = getArticleById(id);
 		
 		if(article == null) {
-			return "<script>alert('해당 게시물은 존재하지 않습니다.'); location.replace('showList');</script>";
+			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
 		}
 		
 		deleteArticle(article);
@@ -89,6 +102,10 @@ public class UsrHomArticleController {
 		return article;
 	}
 
+	private List<Article> getArticles() {
+		return this.articles;
+	}
+	
 	private Article getArticleById(int id) {
 		
 		for(Article article : this.articles) {
@@ -109,9 +126,6 @@ public class UsrHomArticleController {
 		article.setBody(body);
 	}
 	
-	private List<Article> getArticles() {
-		return this.articles;
-	}
 }
 
 @Data
