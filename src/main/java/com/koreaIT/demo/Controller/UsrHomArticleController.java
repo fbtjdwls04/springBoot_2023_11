@@ -24,19 +24,6 @@ public class UsrHomArticleController {
 		makeTestData();
 	}
 	
-	private Article writeArticle(String title, String body) {
-		Article article = new Article(++this.lastArticleId,title,body);
-		articles.add(article);
-		
-		return article;
-	}
-	
-	private void makeTestData() {
-		for(int i = 1; i <= testcaseCnt; i++) {
-			writeArticle("내용 " + i,"내용 " + i);
-		}
-	}
-	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
 	public Article doWrite(String title, String body) {
@@ -45,9 +32,54 @@ public class UsrHomArticleController {
 		return article;
 	}
 	
+	@RequestMapping("/usr/article/doDelete")
+	@ResponseBody
+	public String doDelete(int id) {
+		Article article = getArticleById(id);
+		
+		if(article == null) {
+			return "<script>alert('해당 게시물은 존재하지 않습니다.'); location.replace('showList');</script>";
+		}
+		
+		deleteArticle(article);
+		
+		return String.format("<script>alert('%d번 게시물이 삭제 되었습니다.'); location.replace('showList');</script>",id);
+	}
+	
 	@RequestMapping("/usr/article/showList")
 	@ResponseBody
 	public List<Article> showList() {
+		return getArticles();
+	}
+	
+	//============================================== 기능 메서드 =======================================
+	private void makeTestData() {
+		for(int i = 1; i <= testcaseCnt; i++) {
+			writeArticle("내용 " + i,"내용 " + i);
+		}
+	}
+
+	private Article writeArticle(String title, String body) {
+		Article article = new Article(++this.lastArticleId,title,body);
+		this.articles.add(article);
+		
+		return article;
+	}
+
+	private Article getArticleById(int id) {
+		for(Article article : articles) {
+			if(article.getId() == id) {
+				return article;
+			}
+		}
+		return null;
+	}
+	
+	private void deleteArticle(Article article) {
+		this.articles.remove(article);
+	}
+	
+	private List<Article> getArticles() {
 		return this.articles;
 	}
 }
@@ -55,7 +87,7 @@ public class UsrHomArticleController {
 @Data
 @AllArgsConstructor
 class Article {
-	int id = 1;
-	String title;
-	String body;
+	private int id = 1;
+	private String title;
+	private String body;
 }
