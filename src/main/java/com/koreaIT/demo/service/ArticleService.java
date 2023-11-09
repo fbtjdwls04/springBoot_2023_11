@@ -15,10 +15,6 @@ public class ArticleService {
 	public ArticleService(ArticleDao articleDao) {
 		this.articleDao = articleDao;
 	}
-	
-	public void makeTestData() {
-		articleDao.makeTestData();
-	}
 
 	public Article writeArticle(String title, String body) {
 		return articleDao.writeArticle(title,body);
