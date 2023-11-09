@@ -19,22 +19,46 @@ public class UsrHomArticleController {
 	int testcaseCnt = 10;
 	
 	UsrHomArticleController(){
+		
 		this.articles = new ArrayList<>();
 		this.lastArticleId = 0;
 		makeTestData();
+	}
+
+	@RequestMapping("/usr/article/showList")
+	@ResponseBody
+	public List<Article> showList() {
+		return getArticles();
 	}
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
 	public Article doWrite(String title, String body) {
+		
 		Article article = writeArticle(title, body);
 		
 		return article;
 	}
 	
+	@RequestMapping("/usr/article/doModify")
+	@ResponseBody
+	public String doModify(int id, String title, String body) {
+		
+		Article article = getArticleById(id);
+		
+		if(article == null) {
+			return "<script>alert('해당 게시물은 존재하지 않습니다.'); location.replace('showList');</script>";
+		}
+		
+		modifyArticle(article, title, body);
+		
+		return String.format("<script>alert('%d번 게시물이 수정 되었습니다.'); location.replace('showList');</script>",id);
+	}
+	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public String doDelete(int id) {
+		
 		Article article = getArticleById(id);
 		
 		if(article == null) {
@@ -46,11 +70,8 @@ public class UsrHomArticleController {
 		return String.format("<script>alert('%d번 게시물이 삭제 되었습니다.'); location.replace('showList');</script>",id);
 	}
 	
-	@RequestMapping("/usr/article/showList")
-	@ResponseBody
-	public List<Article> showList() {
-		return getArticles();
-	}
+	
+
 	
 	//============================================== 기능 메서드 =======================================
 	private void makeTestData() {
@@ -60,14 +81,17 @@ public class UsrHomArticleController {
 	}
 
 	private Article writeArticle(String title, String body) {
+		
 		Article article = new Article(++this.lastArticleId,title,body);
+		
 		this.articles.add(article);
 		
 		return article;
 	}
 
 	private Article getArticleById(int id) {
-		for(Article article : articles) {
+		
+		for(Article article : this.articles) {
 			if(article.getId() == id) {
 				return article;
 			}
@@ -77,6 +101,12 @@ public class UsrHomArticleController {
 	
 	private void deleteArticle(Article article) {
 		this.articles.remove(article);
+	}
+	
+
+	private void modifyArticle(Article article, String title, String body) {
+		article.setTitle(title);
+		article.setBody(body);
 	}
 	
 	private List<Article> getArticles() {
