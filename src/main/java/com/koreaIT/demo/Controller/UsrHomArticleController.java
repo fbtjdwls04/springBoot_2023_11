@@ -24,8 +24,8 @@ public class UsrHomArticleController {
 		makeTestData();
 	}
 	
-	private Article writeArticle(int id, String title, String body) {
-		Article article = new Article(id,title,body);
+	private Article writeArticle(String title, String body) {
+		Article article = new Article(++this.lastArticleId,title,body);
 		articles.add(article);
 		
 		return article;
@@ -33,14 +33,14 @@ public class UsrHomArticleController {
 	
 	private void makeTestData() {
 		for(int i = 1; i <= testcaseCnt; i++) {
-			writeArticle(++this.lastArticleId,"내용 " + i,"내용 " + i);
+			writeArticle("내용 " + i,"내용 " + i);
 		}
 	}
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
 	public Article doWrite(String title, String body) {
-		Article article = writeArticle(++this.lastArticleId, title, body);
+		Article article = writeArticle(title, body);
 		
 		return article;
 	}
