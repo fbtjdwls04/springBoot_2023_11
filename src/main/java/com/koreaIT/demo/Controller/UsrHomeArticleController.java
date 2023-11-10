@@ -10,11 +10,11 @@ import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.vo.Article;
 
 @Controller
-public class UsrHomArticleController {
+public class UsrHomeArticleController {
 	
 	private ArticleService articleService;
 	
-	public UsrHomArticleController(ArticleService articleService) {
+	public UsrHomeArticleController(ArticleService articleService) {
 		this.articleService = articleService;
 	}
 	
@@ -41,7 +41,11 @@ public class UsrHomArticleController {
 	@ResponseBody
 	public Article doWrite(String title, String body) {
 		
-		Article article = articleService.writeArticle(title, body);
+		articleService.writeArticle(title, body);
+		
+		int id  = articleService.getLastInsertId();
+		
+		Article article = articleService.getArticleById(id);
 		
 		return article;
 	}
@@ -56,7 +60,7 @@ public class UsrHomArticleController {
 			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
 		}
 		
-		articleService.modifyArticle(article, title, body);
+		articleService.modifyArticle(id, title, body);
 		
 		return String.format("<script>alert('%d번 게시물이 수정 되었습니다.'); location.replace('showList');</script>",id);
 	}
@@ -71,7 +75,7 @@ public class UsrHomArticleController {
 			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
 		}
 		
-		articleService.deleteArticle(article);
+		articleService.deleteArticle(id);
 		
 		return String.format("<script>alert('%d번 게시물이 삭제 되었습니다.'); location.replace('showList');</script>",id);
 	}
