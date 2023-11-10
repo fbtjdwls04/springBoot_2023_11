@@ -26,7 +26,7 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/showDetail")
 	@ResponseBody
-	public String showDetail(int id) {
+	public Object showDetail(int id) {
 		
 		Article article = articleService.getArticleById(id);
 		
@@ -34,7 +34,7 @@ public class UsrHomeArticleController {
 			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
 		}
 		
-		return String.format("번호 : %d <br/> 제목 : %s <br/> 내용 : %s",article.getId(), article.getTitle(), article.getBody());
+		return article;
 	}
 	
 	@RequestMapping("/usr/article/doWrite")
@@ -62,7 +62,7 @@ public class UsrHomeArticleController {
 		
 		articleService.modifyArticle(id, title, body);
 		
-		return String.format("<script>alert('%d번 게시물이 수정 되었습니다.'); location.replace('showList');</script>",id);
+		return String.format("<script>alert('%d번 게시물이 수정 되었습니다.'); location.replace('showDetail?id=%d');</script>",id,id);
 	}
 	
 	@RequestMapping("/usr/article/doDelete")

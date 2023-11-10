@@ -16,7 +16,7 @@ public interface ArticleDao {
 				SET regDate = NOW()
 					,updateDate = NOW()
 					,title = #{title}
-					,body = #{body}
+					,`body` = #{body}
 			""")
 	public void writeArticle(String title, String body);
 	
@@ -39,10 +39,17 @@ public interface ArticleDao {
 	public void deleteArticle(int id);
 	
 	@Select("""
-			UPDATE article 
-				SET title = #{title}
-				,body = #{body}
-				WHERE id = #{id}
+			<script>
+				UPDATE article 
+					SET updateDate = NOW() 
+					<if test="title != null and title != ''">
+						,title = #{title}
+					</if>
+					<if test="body != null and body != ''">
+						,`body` = #{body}
+					</if>
+					WHERE id = #{id}
+			</script>
 			""")
 	public void modifyArticle(int id, String title, String body);
 	
