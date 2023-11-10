@@ -2,6 +2,7 @@ package com.koreaIT.demo.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import com.koreaIT.demo.vo.Member;
 
@@ -18,11 +19,11 @@ public interface MemberDao {
 				`name` = #{name},
 				nickname = #{nickname},
 				cellphoneNum = #{cellphoneNum},
-				email = #{email};
+				email = #{email}
 			""")
 	public void doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email);
 	
-	@Insert("""
+	@Select("""
 			SELECT * 
 				FROM `member`
 				WHERE loginId = #{loginId}

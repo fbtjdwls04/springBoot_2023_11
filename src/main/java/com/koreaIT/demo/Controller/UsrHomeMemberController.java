@@ -20,7 +20,13 @@ public class UsrHomeMemberController {
 	@ResponseBody
 	public String doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
 		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if(member != null) {
+			return String.format("<script>alert('%s 는 사용중인 아이디입니다.'); location.replace('/usr/article/showList');</script>",loginId);
+		}
+		
 		memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
-		return "계정 생성됨";
+		return String.format("<script>alert('%s 계정이 생성되었습니다.'); location.replace('/usr/article/showList');</script>",loginId);
 	}
 }
