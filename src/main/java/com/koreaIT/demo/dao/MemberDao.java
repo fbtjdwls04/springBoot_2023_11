@@ -30,4 +30,12 @@ public interface MemberDao {
 			""")
 	public Member getMemberByLoginId(String loginId);
 	
+	@Select("""
+			SELECT * 
+				FROM `member`
+				WHERE loginId = #{loginId}
+				AND loginPw = #{loginPw}
+			""")
+	public Member doLogin(String loginId, String loginPw);
+	
 }

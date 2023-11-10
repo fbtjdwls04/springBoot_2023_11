@@ -21,4 +21,8 @@ public class MemberService {
 	public Member getMemberByLoginId(String loginId) {
 		return memberDao.getMemberByLoginId(loginId);
 	}
+
+	public Member doLogin(String loginId, String loginPw) {
+		return memberDao.doLogin(loginId, loginPw);
+	}
 }
