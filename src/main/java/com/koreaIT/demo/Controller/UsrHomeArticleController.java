@@ -1,5 +1,6 @@
 package com.koreaIT.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.vo.Article;
+import com.koreaIT.demo.vo.ResultData;
 
 @Controller
 public class UsrHomeArticleController {
@@ -21,26 +23,41 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/showList")
 	@ResponseBody
-	public List<Article> showList() {
-		return articleService.getArticles();
+	public ResultData showList() {
+		
+		List<Article> articles = articleService.getArticles();
+		
+		if(articles.size() == 0) {
+			return ResultData.from("F-1","게시물이 존재하지 않습니다");
+		}
+		
+		return ResultData.from("S-1","게시물 목록", articles);
 	}
 	
 	@RequestMapping("/usr/article/showDetail")
 	@ResponseBody
-	public Object showDetail(int id) {
+	public ResultData showDetail(int id) {
 		
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return Util.f("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
+			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
 		}
 		
-		return article;
+		return ResultData.from("S-1", Util.f("%d번 게시물 조회", id), article);
 	}
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public Article doWrite(String title, String body) {
+	public ResultData doWrite(String title, String body) {
+		
+		if(Util.empty(title)) {
+			return ResultData.from("F-1", "제목을 입력해주세요");
+		}
+		
+		if(Util.empty(body)) {
+			return ResultData.from("F-2", "내용을 입력해주세요");
+		}
 		
 		articleService.writeArticle(title, body);
 		
@@ -48,37 +65,37 @@ public class UsrHomeArticleController {
 		
 		Article article = articleService.getArticleById(id);
 		
-		return article;
+		return ResultData.from("S-1", Util.f("%d번 게시글을 생성했습니다", id), article);
 	}
 	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(int id, String title, String body) {
+	public ResultData doModify(int id, String title, String body) {
 		
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return Util.f("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
+			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
 		}
 		
 		articleService.modifyArticle(id, title, body);
 		
-		return Util.f("<script>alert('%d번 게시물이 수정 되었습니다.'); location.replace('showDetail?id=%d');</script>",id,id);
+		return ResultData.from("S-1", Util.f("%d번 게시물 수정 성공", id), articleService.getArticleById(id));
 	}
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(int id) {
+	public ResultData doDelete(int id) {
 		
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return Util.f("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
+			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
 		}
 		
 		articleService.deleteArticle(id);
 		
-		return Util.f("<script>alert('%d번 게시물이 삭제 되었습니다.'); location.replace('showList');</script>",id);
+		return ResultData.from("S-1", Util.f("%d번 게시물 삭제 성공", id));
 	}
 	
 }

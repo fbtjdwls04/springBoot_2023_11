@@ -20,7 +20,7 @@ public class UsrHomeMemberController {
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public Object doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
+	public ResultData doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
 		if(Util.empty(loginId)) {
 			return ResultData.from("F-1", "아이디를 입력해주세요");
 		}
