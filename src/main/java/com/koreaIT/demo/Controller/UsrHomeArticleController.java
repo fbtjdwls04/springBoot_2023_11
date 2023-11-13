@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.vo.Article;
 
@@ -31,7 +32,7 @@ public class UsrHomeArticleController {
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
+			return Util.f("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
 		}
 		
 		return article;
@@ -57,12 +58,12 @@ public class UsrHomeArticleController {
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
+			return Util.f("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
 		}
 		
 		articleService.modifyArticle(id, title, body);
 		
-		return String.format("<script>alert('%d번 게시물이 수정 되었습니다.'); location.replace('showDetail?id=%d');</script>",id,id);
+		return Util.f("<script>alert('%d번 게시물이 수정 되었습니다.'); location.replace('showDetail?id=%d');</script>",id,id);
 	}
 	
 	@RequestMapping("/usr/article/doDelete")
@@ -72,12 +73,12 @@ public class UsrHomeArticleController {
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return String.format("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
+			return Util.f("<script>alert('%d번 게시물은 존재하지 않습니다.'); location.replace('showList');</script>",id);
 		}
 		
 		articleService.deleteArticle(id);
 		
-		return String.format("<script>alert('%d번 게시물이 삭제 되었습니다.'); location.replace('showList');</script>",id);
+		return Util.f("<script>alert('%d번 게시물이 삭제 되었습니다.'); location.replace('showList');</script>",id);
 	}
 	
 }

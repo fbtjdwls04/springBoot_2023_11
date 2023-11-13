@@ -47,11 +47,11 @@ public class UsrHomeMemberController {
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if(member != null) {
-			return String.format("%s는 이미 사용중인 아이디입니다",loginId);
+			return Util.f("이미 사용중인 아이디(%s)입니다", loginId);
 		}
 		
 		memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
-		return String.format("<script>alert('%s 계정이 생성되었습니다.'); location.replace('/usr/article/showList');</script>",loginId);
+		return Util.f("<script>alert('%s 계정이 생성되었습니다.'); location.replace('/usr/article/showList');</script>",loginId);
 	}
 	
 	@RequestMapping("/usr/member/doLogin")
@@ -61,9 +61,9 @@ public class UsrHomeMemberController {
 		Member member = memberService.doLogin(loginId, loginPw);
 		
 		if(member == null) {
-			return String.format("<script>alert('아이디와 비밀번호를 확인해주세요.'); location.replace('/usr/article/showList');</script>",loginId);
+			return Util.f("<script>alert('아이디와 비밀번호를 확인해주세요.'); location.replace('/usr/article/showList');</script>",loginId);
 		}
 		
-		return String.format("<script>alert('%s 님 환영합니다!'); location.replace('/usr/article/showList');</script>",loginId);
+		return Util.f("<script>alert('%s 님 환영합니다!'); location.replace('/usr/article/showList');</script>",loginId);
 	}
 }
