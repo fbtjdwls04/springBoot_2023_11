@@ -9,6 +9,8 @@ import com.koreaIT.demo.service.MemberService;
 import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.ResultData;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class UsrHomeMemberController {
 	
@@ -57,14 +59,41 @@ public class UsrHomeMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(String loginId, String loginPw) {
+	public ResultData doLogin(HttpSession session,String loginId, String loginPw) {
+		
+		if(session.getAttribute("loginedMemberId") != null) {
+			return ResultData.from("F-1","이미 로그인중입니다");
+		}
+		
+		if(Util.empty(loginId)) {
+			return ResultData.from("F-2", "아이디를 입력해주세요");
+		}
+		
+		if(Util.empty(loginPw)) {
+			return ResultData.from("F-3", "비밀번호를 입력해주세요");
+		}
 		
 		Member member = memberService.doLogin(loginId, loginPw);
 		
 		if(member == null) {
-			return Util.f("<script>alert('아이디와 비밀번호를 확인해주세요.'); location.replace('/usr/article/showList');</script>",loginId);
+			return ResultData.from("F-4","아이디 또는 비밀번호를 확인해주세요");
 		}
 		
-		return Util.f("<script>alert('%s 님 환영합니다!'); location.replace('/usr/article/showList');</script>",loginId);
+		session.setAttribute("loginedMemberId", member.getId());
+		
+		return ResultData.from("S-1",Util.f("%s님 환영합니다", member.getNickname()));
+	}
+	
+	@RequestMapping("/usr/member/doLogout")
+	@ResponseBody
+	public ResultData doLogout(HttpSession session) {
+		
+		if(session.getAttribute("loginedMemberId") == null) {
+			return ResultData.from("F-1","로그인 후 사용해주세요");
+		}
+		
+		session.removeAttribute("loginedMemberId");
+		
+		return ResultData.from("S-1","로그아웃 되었습니다");
 	}
 }
