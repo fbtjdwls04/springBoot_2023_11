@@ -4,17 +4,21 @@ USE SB_AM;
 
 CREATE TABLE article(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    memberId INT UNSIGNED NOT NULL,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
     title VARCHAR(100) NOT NULL,
     `body` TEXT NOT NULL
 );
 
+TRUNCATE article;
+
 SHOW TABLES;
 DESC article;
 
 INSERT INTO article
-SET regDate = NOW(),
+SET memberId = 2,
+regDate = NOW(),
 updateDate = NOW(),
 title = CONCAT('제목', CEIL(RAND()*10)),
 `body` = CONCAT('내용', CEIL(RAND()*10));
@@ -64,7 +68,6 @@ SET regDate = NOW(),
 updateDate = NOW(),
 loginId = 'a',
 loginPw = 'a',
-authLevel = 2,
 `name` = 'a',
 nickname = 'a',
 cellphoneNum = '010-0000-0000',
@@ -75,11 +78,11 @@ SET regDate = NOW(),
 updateDate = NOW(),
 loginId = 'b',
 loginPw = 'b',
-authLevel = 2,
 `name` = 'b',
 nickname = 'b',
 cellphoneNum = '010-0000-0000',
 email = 'b@admin.com';
 
 SELECT * FROM `member`;
+DELETE FROM `member` WHERE id > 1;
 

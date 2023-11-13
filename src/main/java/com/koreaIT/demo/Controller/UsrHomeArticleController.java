@@ -1,6 +1,5 @@
 package com.koreaIT.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -11,6 +10,8 @@ import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.ResultData;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsrHomeArticleController {
@@ -23,7 +24,11 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public ResultData<Article> doWrite(String title, String body) {
+	public ResultData<Article> doWrite(HttpSession session,String title, String body) {
+		
+		if(session.getAttribute("loginedMemberId") == null) {
+			return ResultData.from("F-L","로그인 후 사용해주세요");
+		}
 		
 		if(Util.empty(title)) {
 			return ResultData.from("F-1", "제목을 입력해주세요");
@@ -33,7 +38,8 @@ public class UsrHomeArticleController {
 			return ResultData.from("F-2", "내용을 입력해주세요");
 		}
 		
-		articleService.writeArticle(title, body);
+		int memberId = (int)session.getAttribute("loginedMemberId");
+		articleService.writeArticle(memberId,title, body);
 		
 		int id  = articleService.getLastInsertId();
 		
@@ -70,12 +76,20 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public ResultData doModify(int id, String title, String body) {
+	public ResultData doModify(HttpSession session, int id, String title, String body) {
+		
+		if(session.getAttribute("loginedMemberId") == null) {
+			return ResultData.from("F-L","로그인 후 사용해주세요");
+		}
 		
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
 			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
+		}
+		
+		if((int)session.getAttribute("loginedMemberId") != article.getMemberId()) {
+			return ResultData.from("F-A","권한이 없습니다");
 		}
 		
 		articleService.modifyArticle(id, title, body);
@@ -85,12 +99,20 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public ResultData doDelete(int id) {
+	public ResultData doDelete(HttpSession session, int id) {
+		
+		if(session.getAttribute("loginedMemberId") == null) {
+			return ResultData.from("F-L","로그인 후 사용해주세요");
+		}
 		
 		Article article = articleService.getArticleById(id);
-		
+
 		if(article == null) {
 			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
+		}
+		
+		if((int)session.getAttribute("loginedMemberId") != article.getMemberId()) {
+			return ResultData.from("F-A","권한이 없습니다");
 		}
 		
 		articleService.deleteArticle(id);
