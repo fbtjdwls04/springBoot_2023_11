@@ -2,22 +2,22 @@ package com.koreaIT.demo.vo;
 
 import lombok.Getter;
 
-public class ResultData {
+public class ResultData<DT> {
 	
 	@Getter
 	private String resultCode;
 	@Getter
 	private String msg;
 	@Getter
-	private Object data;
+	private DT data;
 	
-	public static ResultData from(String resultCold, String msg) {
+	public static <DT> ResultData<DT> from(String resultCold, String msg) {
 		return from(resultCold, msg, null);
 	}
 	
-	public static ResultData from(String resultCold, String msg, Object data) {
+	public static <DT> ResultData<DT> from(String resultCold, String msg, DT data) {
 		
-		ResultData rd = new ResultData();
+		ResultData<DT> rd = new ResultData<>();
 		rd.resultCode = resultCold;
 		rd.msg = msg;
 		rd.data = data;
