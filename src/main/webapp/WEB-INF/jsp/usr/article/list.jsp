@@ -2,35 +2,33 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>LIST</title>
-</head>
-<body>
+	<c:set var="pageTitle" value="ARTICLE LIST" />
+	   	
+	<%@ include file="../common/head.jsp" %>
+   	
 	<h1>Article List</h1>
 	<a href="/">home</a>
-	<table border=1>
-		<thear>
-			<tr>
-				<th>번호</th>
-				<th>작성일</th>
-				<th>작성자</th>
-				<th>제목</th>
-			</tr>
-		</thear>
-		<tbody>
-			<c:forEach var="article" items="${articles}">
+	<div class="table-box-style">
+		<table class="border">
+			<thead>
 				<tr>
-					<td>${article.id}</td>
-					<td>${article.regDate}</td>
-					<td>${article.memberId}</td>
-					<td>${article.title}</td>
+					<th>번호</th>
+					<th>작성일</th>
+					<th>제목</th>
+					<th>작성자</th>
 				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				<c:forEach var="article" items="${articles}">
+					<tr>
+						<td>${article.id}</td>
+						<td>${article.regDate}</td>
+						<td class="hover:underline"><a href="detail?id=${article.id}">${article.title}</a></td>
+						<td>${article.memberId}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
 	
-</body>
-</html>
+	<%@ include file="../common/foot.jsp" %>

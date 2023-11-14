@@ -1,0 +1,21 @@
+@charset "UTF-8";
+@font-face {
+    font-family: 'SOYOMapleBoldTTF';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/SOYOMapleBoldTTF.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+html > body {
+	font-family: 'SOYOMapleBoldTTF',sans-serif;
+	text-underline-position: under;
+} 
+
+.table-box-style > table{
+	width: 100%;
+}
+.table-box-style > table th, .table-box-style > table td {
+	border: 1px soild black;
+	padding: 10px;
+	text-align: center;
+}
