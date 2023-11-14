@@ -6,7 +6,7 @@
    	
    	<%@ include file="../common/head.jsp" %>
    	
-   	<section>
+   	<section class="container mx-auto">
 		<div>
 			<div>
 				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe voluptatibus soluta placeat consequatur asperiores harum quia iure omnis! Odit eligendi fugit explicabo maxime voluptatum autem libero et unde nulla reiciendis?

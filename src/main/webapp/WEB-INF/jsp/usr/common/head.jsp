@@ -14,17 +14,17 @@
 <title>${pageTitle}</title>
 </head>
 <body>
-	<div>
-		<div class="flex justify-center text-4xl"><a href="/">로고</a></div>
-		
-		<ul class="flex">
-			<li class="hover:underline"><a href="/">home</a></li>
-			<li class="hover:underline"><a href="/usr/article/list">LIST</a></li>
+	<div class="p-4 flex container mx-auto items-center">
+		<div class="h-full items-center text-4xl"><a href="/"><i class="fa-solid fa-code"></i></a></div>
+		<div class="flex-grow"></div>
+		<ul class="flex text-2xl">
+			<li class="hover:underline"><a class="px-4" href="/">HOME</a></li>
+			<li class="hover:underline"><a class="px-4" href="/usr/article/list">LIST</a></li>
 		</ul>
 	</div>
 	
-	<section>
+	<section class="container mx-auto mb-20">
 		<div>
-			<h1 class="flex justify-center text-2xl">${pageTitle }&nbsp;PAGE</h1>
+			<h1 class="flex justify-center text-3xl">${pageTitle }&nbsp;PAGE</h1>
 		</div>
 	</section>
