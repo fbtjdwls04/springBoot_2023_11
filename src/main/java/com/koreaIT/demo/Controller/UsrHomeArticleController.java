@@ -59,63 +59,93 @@ public class UsrHomeArticleController {
 		return "usr/article/list";
 	}
 	
-	@RequestMapping("/usr/article/showDetail")
-	@ResponseBody
-	public ResultData<Article> showDetail(int id) {
+	@RequestMapping("/usr/article/detail")
+	public String showDetail(HttpSession session,Model model,int id) {
 		
-		Article article = articleService.getArticleById(id);
+		Article article = articleService.forPrintArticle(id);
+		
+		int loginedMemberId = -1;
 		
 		if(article == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
+			return "redirect:/usr/article/list";
 		}
 		
-		return ResultData.from("S-1", Util.f("%d번 게시물 조회", id), article);
+		if(session.getAttribute("loginedMemberId") != null) {
+			loginedMemberId = (int)session.getAttribute("loginedMemberId");
+		}
+		
+		model.addAttribute("article",article);
+		model.addAttribute("loginedMemberId", loginedMemberId);
+		
+		return "usr/article/detail";
 	}
 	
-	@RequestMapping("/usr/article/doModify")
+	@RequestMapping("/usr/article/modify")
 	@ResponseBody
-	public ResultData doModify(HttpSession session, int id, String title, String body) {
+	public String modify(HttpSession session, int id, String title, String body) {
 		
 		if(session.getAttribute("loginedMemberId") == null) {
-			return ResultData.from("F-L","로그인 후 사용해주세요");
+			return "<script>alert('로그인 후 사용이 가능합니다'); location.replace('list');</script>";
 		}
 		
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
+			return "<script>alert('게시글이 존재하지 않습니다'); location.replace('list');</script>";
 		}
 		
 		if((int)session.getAttribute("loginedMemberId") != article.getMemberId()) {
-			return ResultData.from("F-A","권한이 없습니다");
+			return "<script>alert('권한이 없습니다'); location.replace('list');</script>";
 		}
 		
 		articleService.modifyArticle(id, title, body);
 		
-		return ResultData.from("S-1", Util.f("%d번 게시물 수정 성공", id));
+		return Util.f("<script>alert('%d번 게시글이 수정되었습니다'); location.replace('detail?id=%d');</script>",id,id);
 	}
 	
-	@RequestMapping("/usr/article/doDelete")
-	@ResponseBody
-	public ResultData doDelete(HttpSession session, int id) {
+	@RequestMapping("/usr/article/doModify")
+	public String doModify(HttpSession session, int id, String title, String body) {
 		
 		if(session.getAttribute("loginedMemberId") == null) {
-			return ResultData.from("F-L","로그인 후 사용해주세요");
+			return "<script>alert('로그인 후 사용이 가능합니다'); location.replace('list');</script>";
+		}
+		
+		Article article = articleService.getArticleById(id);
+		
+		if(article == null) {
+			return "<script>alert('게시글이 존재하지 않습니다'); location.replace('list');</script>";
+		}
+		
+		if((int)session.getAttribute("loginedMemberId") != article.getMemberId()) {
+			return "<script>alert('권한이 없습니다'); location.replace('list');</script>";
+		}
+		
+		articleService.modifyArticle(id, title, body);
+		
+		return Util.f("<script>alert('%d번 게시글이 수정되었습니다'); location.replace('detail?id=%d');</script>",id,id);
+	}
+	
+	@RequestMapping("/usr/article/delete")
+	@ResponseBody
+	public String doDelete(HttpSession session, int id) {
+		
+		if(session.getAttribute("loginedMemberId") == null) {
+			return "<script>alert('로그인 후 사용이 가능합니다'); location.replace('list');</script>";
 		}
 		
 		Article article = articleService.getArticleById(id);
 
-		if(article == null) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id));
+		if(article == null) {	
+			return "<script>alert('게시글이 존재하지 않습니다'); location.replace('list');</script>";
 		}
 		
 		if((int)session.getAttribute("loginedMemberId") != article.getMemberId()) {
-			return ResultData.from("F-A","권한이 없습니다");
+			return "<script>alert('권한이 없습니다'); location.replace('list');</script>";
 		}
 		
 		articleService.deleteArticle(id);
 		
-		return ResultData.from("S-1", Util.f("%d번 게시물 삭제 성공", id));
+		return Util.f("<script>alert('%d번 게시글이 삭제되었습니다'); location.replace('list');</script>",id);
 	}
 	
 }

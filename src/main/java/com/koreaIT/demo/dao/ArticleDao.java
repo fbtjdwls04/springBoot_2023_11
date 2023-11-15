@@ -31,10 +31,20 @@ public interface ArticleDao {
 	public List<Article> getArticles();
 	
 	@Select("""
-			SELECT * FROM article 
+			SELECT *
+				FROM article 
 				WHERE id = #{id}
 			""")
 	public Article getArticleById(int id);
+	
+	@Select("""
+			SELECT a.*, m.name AS writerName
+				FROM article AS a
+			 	INNER JOIN member AS m
+			 	ON a.memberId = m.id
+				WHERE a.id = #{id}
+			""")
+	public Article forPrintArticle(int id);
 	
 	@Select("""
 			DELETE FROM article 

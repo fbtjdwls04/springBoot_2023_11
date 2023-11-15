@@ -86,3 +86,10 @@ email = 'b@admin.com';
 SELECT * FROM `member`;
 DELETE FROM `member` WHERE id > 1;
 
+SELECT * 
+FROM article AS a 
+INNER JOIN `member` AS m 
+ON a.memberId = m.id 
+ORDER BY a.id DESC
+
+
