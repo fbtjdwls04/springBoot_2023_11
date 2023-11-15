@@ -11,7 +11,9 @@ import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.ResultData;
+import com.koreaIT.demo.vo.Rq;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -25,28 +27,23 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public ResultData<Article> doWrite(HttpSession session,String title, String body) {
+	public String doWrite(HttpServletRequest req,String title, String body) {
 		
-		if(session.getAttribute("loginedMemberId") == null) {
-			return ResultData.from("F-L","로그인 후 사용해주세요");
-		}
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		if(Util.empty(title)) {
-			return ResultData.from("F-1", "제목을 입력해주세요");
+			return Util.jsHistoryBack("제목을 입력해주세요");
 		}
 		
 		if(Util.empty(body)) {
-			return ResultData.from("F-2", "내용을 입력해주세요");
+			return Util.jsHistoryBack("내용을 입력해주세요");
 		}
 		
-		int memberId = (int)session.getAttribute("loginedMemberId");
-		articleService.writeArticle(memberId,title, body);
+		articleService.writeArticle(rq.getLoginedMemberId(),title, body);
 		
 		int id  = articleService.getLastInsertId();
 		
-		Article article = articleService.getArticleById(id);
-		
-		return ResultData.from("S-1", Util.f("%d번 게시글을 생성했습니다", id), article);
+		return Util.jsReplace(Util.f("%d번 게시물이 작성되었습니다",id),Util.f("detail?id=%d",id));
 	}
 	
 	@RequestMapping("/usr/article/list")
@@ -60,22 +57,18 @@ public class UsrHomeArticleController {
 	}
 	
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(HttpSession session,Model model,int id) {
+	public String showDetail(HttpServletRequest req,Model model,int id) {
+		
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		Article article = articleService.forPrintArticle(id);
-		
-		int loginedMemberId = -1;
 		
 		if(article == null) {
 			return "redirect:/usr/article/list";
 		}
 		
-		if(session.getAttribute("loginedMemberId") != null) {
-			loginedMemberId = (int)session.getAttribute("loginedMemberId");
-		}
-		
 		model.addAttribute("article",article);
-		model.addAttribute("loginedMemberId", loginedMemberId);
+		model.addAttribute("loginedMemberId", rq.getLoginedMemberId());
 		
 		return "usr/article/detail";
 	}
@@ -104,11 +97,9 @@ public class UsrHomeArticleController {
 	}
 	
 	@RequestMapping("/usr/article/doModify")
-	public String doModify(HttpSession session, int id, String title, String body) {
+	public String doModify(HttpServletRequest req, int id, String title, String body) {
 		
-		if(session.getAttribute("loginedMemberId") == null) {
-			return "<script>alert('로그인 후 사용이 가능합니다'); location.replace('list');</script>";
-		}
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		Article article = articleService.getArticleById(id);
 		
@@ -116,7 +107,7 @@ public class UsrHomeArticleController {
 			return "<script>alert('게시글이 존재하지 않습니다'); location.replace('list');</script>";
 		}
 		
-		if((int)session.getAttribute("loginedMemberId") != article.getMemberId()) {
+		if(rq.getLoginedMemberId() != article.getMemberId()) {
 			return "<script>alert('권한이 없습니다'); location.replace('list');</script>";
 		}
 		
@@ -125,27 +116,25 @@ public class UsrHomeArticleController {
 		return Util.f("<script>alert('%d번 게시글이 수정되었습니다'); location.replace('detail?id=%d');</script>",id,id);
 	}
 	
-	@RequestMapping("/usr/article/delete")
+	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(HttpSession session, int id) {
+	public String doDelete(HttpServletRequest req, int id) {
 		
-		if(session.getAttribute("loginedMemberId") == null) {
-			return "<script>alert('로그인 후 사용이 가능합니다'); location.replace('list');</script>";
-		}
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		Article article = articleService.getArticleById(id);
 
 		if(article == null) {	
-			return "<script>alert('게시글이 존재하지 않습니다'); location.replace('list');</script>";
+			return Util.jsHistoryBack(Util.f("%d번 게시글은 존재하지 않습니다",id));
 		}
 		
-		if((int)session.getAttribute("loginedMemberId") != article.getMemberId()) {
-			return "<script>alert('권한이 없습니다'); location.replace('list');</script>";
+		if(rq.getLoginedMemberId() != article.getMemberId()) {
+			return Util.jsHistoryBack(Util.f("권한이 없습니다.",id));
 		}
 		
 		articleService.deleteArticle(id);
 		
-		return Util.f("<script>alert('%d번 게시글이 삭제되었습니다'); location.replace('list');</script>",id);
+		return Util.jsReplace(Util.f("%d번 게시물을 삭제하였습니다",id),"list");
 	}
 	
 }

@@ -39,7 +39,7 @@
 			<hr />
 			<c:if test="${loginedMemberId == article.memberId }">
 				<button><a href="modify?id=${article.id }">수정</a></button>
-				<button onclick="if(confirm('정말 삭제하시겠습니까?')) location.replace('delete?id=${article.id}');">삭제</button>
+				<button onclick="if(confirm('정말 삭제하시겠습니까?')) location.replace('doDelete?id=${article.id}');">삭제</button>
 			</c:if>
 		</div>
 	</div>
