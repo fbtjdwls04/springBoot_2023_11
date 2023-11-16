@@ -6,7 +6,7 @@
 	   	
 	<%@ include file="../common/head.jsp" %>
    	<script>
-   		function modifySubmit(e) {
+   		function writeSubmit(e) {
 			
    			if(e.title.value.trim().length == 0){
    				alert('제목을 입력해주세요');
@@ -25,11 +25,10 @@
    	</script>
    	
 	<div class="container mx-auto table-box-style">
-		<form class="border flex flex-col" action="doModify" onsubmit="modifySubmit(this); return false;" method="post">
-			<input type="hidden" name="id" value="${article.id }"/>
-			<input class="border" type="text" name="title" placeholder="제목을 입력해주세요" value="${article.title}"/>
-			<textarea class="border" name="body" id="" cols="30" rows="10" placeholder="내용을 입력해주세요" >${article.body}</textarea>
-			<button>수정</button>
+		<form class="border flex flex-col" action="doWrite" onsubmit="writeSubmit(this); return false;" method="post">
+			<input class="border" type="text" name="title" placeholder="제목을 입력해주세요"/>
+			<textarea class="border" name="body" id="" cols="30" rows="10" placeholder="내용을 입력해주세요"></textarea>
+			<button>작성</button>
 		</form>
 	</div>
 	<%@ include file="../common/foot.jsp" %>

@@ -25,19 +25,19 @@ public class UsrHomeArticleController {
 		this.articleService = articleService;
 	}
 	
+	@RequestMapping("/usr/article/write")
+	public String write(HttpServletRequest req) {
+		
+		Rq rq = (Rq) req.getAttribute("rq");
+		
+		return "usr/article/write";
+	}
+	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
 	public String doWrite(HttpServletRequest req,String title, String body) {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
-		
-		if(Util.empty(title)) {
-			return Util.jsHistoryBack("제목을 입력해주세요");
-		}
-		
-		if(Util.empty(body)) {
-			return Util.jsHistoryBack("내용을 입력해주세요");
-		}
 		
 		articleService.writeArticle(rq.getLoginedMemberId(),title, body);
 		
@@ -74,29 +74,28 @@ public class UsrHomeArticleController {
 	}
 	
 	@RequestMapping("/usr/article/modify")
-	@ResponseBody
-	public String modify(HttpSession session, int id, String title, String body) {
+	public String modify(HttpServletRequest req, Model model, int id) {
 		
-		if(session.getAttribute("loginedMemberId") == null) {
-			return "<script>alert('로그인 후 사용이 가능합니다'); location.replace('list');</script>";
-		}
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return "<script>alert('게시글이 존재하지 않습니다'); location.replace('list');</script>";
+			return "redirect:list";
 		}
 		
-		if((int)session.getAttribute("loginedMemberId") != article.getMemberId()) {
-			return "<script>alert('권한이 없습니다'); location.replace('list');</script>";
+		if(rq.getLoginedMemberId() != article.getMemberId()) {
+			return "redirect:list";
 		}
 		
-		articleService.modifyArticle(id, title, body);
+		model.addAttribute("article",article);
 		
-		return Util.f("<script>alert('%d번 게시글이 수정되었습니다'); location.replace('detail?id=%d');</script>",id,id);
+		
+		return "usr/article/modify";
 	}
 	
 	@RequestMapping("/usr/article/doModify")
+	@ResponseBody
 	public String doModify(HttpServletRequest req, int id, String title, String body) {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
@@ -104,16 +103,16 @@ public class UsrHomeArticleController {
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return "<script>alert('게시글이 존재하지 않습니다'); location.replace('list');</script>";
+			return Util.jsReplace("게시글이 존재하지 않습니다", "list");
 		}
 		
 		if(rq.getLoginedMemberId() != article.getMemberId()) {
-			return "<script>alert('권한이 없습니다'); location.replace('list');</script>";
+			return Util.jsReplace("권한이 없습니다", Util.f("detail?id=%d", id));
 		}
 		
 		articleService.modifyArticle(id, title, body);
 		
-		return Util.f("<script>alert('%d번 게시글이 수정되었습니다'); location.replace('detail?id=%d');</script>",id,id);
+		return Util.jsReplace(Util.f("%d번 게시물이 수정되었습니다", id), "list");
 	}
 	
 	@RequestMapping("/usr/article/doDelete")

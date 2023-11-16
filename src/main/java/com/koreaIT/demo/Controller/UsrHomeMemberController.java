@@ -1,6 +1,7 @@
 package com.koreaIT.demo.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -8,7 +9,9 @@ import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.MemberService;
 import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.ResultData;
+import com.koreaIT.demo.vo.Rq;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -19,86 +22,95 @@ public class UsrHomeMemberController {
 	public UsrHomeMemberController(MemberService memberService) {
 		this.memberService = memberService;
 	}
+	@RequestMapping("/usr/member/join")
+	public String join(HttpServletRequest req) {
+		
+		Rq rq = (Rq) req.getAttribute("rq");
+		
+		return "/usr/member/join";
+	}
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public ResultData<Member> doJoin(HttpSession session, String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
+	public String doJoin(HttpServletRequest req, String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
 		
-		if(session.getAttribute("loginedMemberId") != null) {
-			return ResultData.from("F-L","로그아웃 후 이용해주세요");
-		}
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		if(Util.empty(loginId)) {
-			return ResultData.from("F-1", "아이디를 입력해주세요");
+			return Util.jsHistoryBack("아이디를 입력해주세요");
 		}
 		
 		if(Util.empty(loginPw)) {
-			return ResultData.from("F-2", "비밀번호를 입력해주세요");
+			return Util.jsHistoryBack("비밀번호를 입력해주세요");
 		}
 		
 		if(Util.empty(name)) {
-			return ResultData.from("F-2", "이름을 입력해주세요");
+			return Util.jsHistoryBack("이름을 입력해주세요");
 		}
 		
 		if(Util.empty(nickname)) {
-			return ResultData.from("F-2", "닉네임을 입력해주세요");
+			return Util.jsHistoryBack("닉네임을 입력해주세요");
 		}
 		
 		if(Util.empty(cellphoneNum)) {
-			return ResultData.from("F-2", "전화번호를 입력해주세요"); 
+			return Util.jsHistoryBack("전화번호를 입력해주세요");
 		}
 		
 		if(Util.empty(email)) {
-			return ResultData.from("F-2", "이메일을 입력해주세요"); 
+			return Util.jsHistoryBack("이메일을 입력해주세요");
 		}
 		
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if(member != null) {
-			return ResultData.from("F-7", Util.f("이미 사용중인 아이디(%s)입니다", loginId));
+			return Util.jsHistoryBack(Util.f("%s (은)는 이미 사용중인 아이디입니다", loginId));
 		}
 		
 		memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
-		return ResultData.from("S-1", "회원 가입 성공", member);
+		return Util.jsReplace("회원가입이 완료되었습니다", "/");
+	}
+	
+	@RequestMapping("/usr/member/login")
+	public String login(HttpServletRequest req) {
+		
+		Rq rq = (Rq) req.getAttribute("rq");
+		
+		return "/usr/member/login";
 	}
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public ResultData doLogin(HttpSession session,String loginId, String loginPw) {
+	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
 		
-		if(session.getAttribute("loginedMemberId") != null) {
-			return ResultData.from("F-L","로그아웃 후 이용해주세요");
-		}
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		if(Util.empty(loginId)) {
-			return ResultData.from("F-1", "아이디를 입력해주세요");
+			return Util.jsHistoryBack("아이디를 입력해주세요");
 		}
 		
 		if(Util.empty(loginPw)) {
-			return ResultData.from("F-2", "비밀번호를 입력해주세요");
+			return Util.jsHistoryBack("비밀번호를 입력해주세요");
 		}
 		
 		Member member = memberService.doLogin(loginId, loginPw);
 		
 		if(member == null) {
-			return ResultData.from("F-3","아이디 또는 비밀번호를 확인해주세요");
+			return Util.jsHistoryBack("아이디 또는 비밀번호를 확인해주세요");
 		}
+
+		req.getSession().setAttribute("loginedMemberId", member.getId());
 		
-		session.setAttribute("loginedMemberId", member.getId());
-		
-		return ResultData.from("S-1",Util.f("%s님 환영합니다", member.getNickname()));
+		return Util.jsReplace(Util.f("%s님 환영합니다", member.getLoginId()), "/");
 	}
 	
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public ResultData doLogout(HttpSession session) {
+	public String doLogout(HttpServletRequest req) {
 		
-		if(session.getAttribute("loginedMemberId") == null) {
-			return ResultData.from("F-L","로그인 후 사용해주세요");
-		}
+		Rq rq = (Rq) req.getAttribute("rq");
 		
-		session.removeAttribute("loginedMemberId");
+		req.getSession().setAttribute("loginedMemberId", 0);
 		
-		return ResultData.from("S-1","정상적으로 로그아웃 되었습니다");
+		return Util.jsReplace("정상적으로 로그아웃 되었습니다","/");
 	}
 }

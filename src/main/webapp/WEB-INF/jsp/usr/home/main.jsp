@@ -7,13 +7,10 @@
    	<%@ include file="../common/head.jsp" %>
    	
    	<section class="container mx-auto">
-		<div>
-			<div>
-				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe voluptatibus soluta placeat consequatur asperiores harum quia iure omnis! Odit eligendi fugit explicabo maxime voluptatum autem libero et unde nulla reiciendis?
-			</div>
-			<div>
-				안녕하세요
-			</div>
+		<div class="text-center">
+			<img class="mx-auto" src="https://image.babosarang.co.kr/product/detail/FRS/1909111603012895/_600.jpg" alt="" />
+			<br />
+			<p class="text-2xl">Hi! Welcome! this is <span style="color: blue;">Spring boot</span> practice page</p>
 		</div>
    	</section>
 	

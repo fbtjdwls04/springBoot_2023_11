@@ -30,15 +30,15 @@
 			</tr>
 			<tr>
 				<th>내용</th>
-				<td>${article.body }</td>
+				<td style="white-space: pre;">${article.body }</td>
 			</tr>
 		</table>
 		<hr />
-		<div>
+		<div class="flex">
 			<button onclick="history.back()">뒤로가기</button>
-			<hr />
+			<div class="flex-grow"></div>
 			<c:if test="${loginedMemberId == article.memberId }">
-				<button><a href="modify?id=${article.id }">수정</a></button>
+				<button class="mr-4"><a href="modify?id=${article.id }">수정</a></button>
 				<button onclick="if(confirm('정말 삭제하시겠습니까?')) location.replace('doDelete?id=${article.id}');">삭제</button>
 			</c:if>
 		</div>
