@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%
-	Integer loginedMemberId = (Integer) session.getAttribute("loginedMemberId");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,11 +21,11 @@
 		<ul class="flex text-2xl">
 			<li class="hover:underline"><a class="px-4" href="/">HOME</a></li>
 			<li class="hover:underline"><a class="px-4" href="/usr/article/list">LIST</a></li>
-			<c:if test="${loginedMemberId == 0 || loginedMemberId == null }">
+			<c:if test="${rq.getLoginedMemberId() == 0 || rq.getLoginedMemberId() == null }">
 				<li class="hover:underline"><a class="px-4" href="/usr/member/login">LOGIN</a></li>
 				<li class="hover:underline"><a class="px-4" href="/usr/member/join">JOIN</a></li>
 			</c:if>
-			<c:if test="${loginedMemberId != 0 && loginedMemberId != null}">
+			<c:if test="${rq.getLoginedMemberId() != 0 && rq.getLoginedMemberId() != null}">
 				<li class="hover:underline"><a class="px-4" href="/usr/article/write">WRITE</a></li>
 				<li class="hover:underline"><a class="px-4" href="/usr/member/doLogout">logout</a></li>
 			</c:if>

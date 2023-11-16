@@ -26,9 +26,7 @@ public class UsrHomeArticleController {
 	}
 	
 	@RequestMapping("/usr/article/write")
-	public String write(HttpServletRequest req) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String write() {
 		
 		return "usr/article/write";
 	}
@@ -64,7 +62,7 @@ public class UsrHomeArticleController {
 		Article article = articleService.forPrintArticle(id);
 		
 		if(article == null) {
-			return "redirect:/usr/article/list";
+			return rq.jsReturnOnView(Util.f("%d번 게시물은 존재하지 않습니다", id));
 		}
 		
 		model.addAttribute("article",article);
@@ -78,18 +76,17 @@ public class UsrHomeArticleController {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
 		
-		Article article = articleService.getArticleById(id);
+		Article article = articleService.forPrintArticle(id);
 		
 		if(article == null) {
-			return "redirect:list";
+			return rq.jsReturnOnView(Util.f("%d번 게시물은 존재하지 않습니다", id));
 		}
 		
 		if(rq.getLoginedMemberId() != article.getMemberId()) {
-			return "redirect:list";
+			return rq.jsReturnOnView("권한이 없습니다");
 		}
 		
 		model.addAttribute("article",article);
-		
 		
 		return "usr/article/modify";
 	}
@@ -112,7 +109,7 @@ public class UsrHomeArticleController {
 		
 		articleService.modifyArticle(id, title, body);
 		
-		return Util.jsReplace(Util.f("%d번 게시물이 수정되었습니다", id), "list");
+		return Util.jsReplace(Util.f("%d번 게시물이 수정되었습니다", id), Util.f("detail?id=%d", id));
 	}
 	
 	@RequestMapping("/usr/article/doDelete")

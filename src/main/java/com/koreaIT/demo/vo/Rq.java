@@ -14,12 +14,12 @@ public class Rq {
 	@Getter
 	private int loginedMemberId;
 	HttpServletResponse res;
-	
-	
+	HttpSession session;
+	HttpServletRequest req;
 	public Rq(HttpServletRequest req, HttpServletResponse response) {
 		this.res = response;
-		
-		HttpSession session = req.getSession();
+		this.req = req;
+		this.session = req.getSession();
 		
 		int loginedMemberId = 0;
 		
@@ -39,4 +39,20 @@ public class Rq {
 			e.printStackTrace();
 		}
 	}
+	
+	public void login(int memberId) {
+		this.session.setAttribute("loginedMemberId", memberId);
+	}
+
+	public void logout() {
+		this.session.setAttribute("loginedMemberId", 0);
+	}
+
+	public String jsReturnOnView(String msg) {
+		
+		req.setAttribute("msg", msg);
+		
+		return "usr/common/js";
+	}
+
 }

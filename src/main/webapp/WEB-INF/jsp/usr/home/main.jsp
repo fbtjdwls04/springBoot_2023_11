@@ -10,7 +10,7 @@
 		<div class="text-center">
 			<img class="mx-auto" src="https://image.babosarang.co.kr/product/detail/FRS/1909111603012895/_600.jpg" alt="" />
 			<br />
-			<p class="text-2xl">Hi! Welcome! this is <span style="color: blue;">Spring boot</span> practice page</p>
+			<p class="text-2xl">Hi! Welcome! This is <span style="color: blue;">Spring boot</span> practice page</p>
 		</div>
    	</section>
 	

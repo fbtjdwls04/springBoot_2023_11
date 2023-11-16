@@ -23,18 +23,14 @@ public class UsrHomeMemberController {
 		this.memberService = memberService;
 	}
 	@RequestMapping("/usr/member/join")
-	public String join(HttpServletRequest req) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String join() {
 		
 		return "/usr/member/join";
 	}
 	
 	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
-	public String doJoin(HttpServletRequest req, String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum, String email) {
 		
 		if(Util.empty(loginId)) {
 			return Util.jsHistoryBack("아이디를 입력해주세요");
@@ -71,9 +67,7 @@ public class UsrHomeMemberController {
 	}
 	
 	@RequestMapping("/usr/member/login")
-	public String login(HttpServletRequest req) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String login() {
 		
 		return "/usr/member/login";
 	}
@@ -98,7 +92,7 @@ public class UsrHomeMemberController {
 			return Util.jsHistoryBack("아이디 또는 비밀번호를 확인해주세요");
 		}
 
-		req.getSession().setAttribute("loginedMemberId", member.getId());
+		rq.login(member.getId());
 		
 		return Util.jsReplace(Util.f("%s님 환영합니다", member.getLoginId()), "/");
 	}
@@ -109,7 +103,7 @@ public class UsrHomeMemberController {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
 		
-		req.getSession().setAttribute("loginedMemberId", 0);
+		rq.logout();
 		
 		return Util.jsReplace("정상적으로 로그아웃 되었습니다","/");
 	}
