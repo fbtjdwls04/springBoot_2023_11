@@ -7,7 +7,7 @@
 	<%@ include file="../common/head.jsp" %>
    	
 	<div class="container mx-auto table-box-style">
-		<table class="border">
+		<table class="table">
 			<thead>
 				<tr>
 					<th>번호</th>

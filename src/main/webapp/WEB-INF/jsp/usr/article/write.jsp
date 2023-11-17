@@ -28,7 +28,7 @@
 		<form class="border flex flex-col" action="doWrite" onsubmit="writeSubmit(this); return false;" method="post">
 			<input class="border" type="text" name="title" placeholder="제목을 입력해주세요"/>
 			<textarea class="border" name="body" id="" cols="30" rows="10" placeholder="내용을 입력해주세요"></textarea>
-			<button>작성</button>
+			<button class="btn btn-success text-[17px]">작성</button>
 		</form>
 	</div>
 	<%@ include file="../common/foot.jsp" %>

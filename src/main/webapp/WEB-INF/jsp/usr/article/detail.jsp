@@ -38,8 +38,8 @@
 			<button onclick="history.back()">뒤로가기</button>
 			<div class="flex-grow"></div>
 			<c:if test="${loginedMemberId == article.memberId }">
-				<button class="mr-4"><a href="modify?id=${article.id }">수정</a></button>
-				<button onclick="if(confirm('정말 삭제하시겠습니까?')) location.replace('doDelete?id=${article.id}');">삭제</button>
+				<button class="btn btn-primary mr-4"><a href="modify?id=${article.id }">수정</a></button>
+				<button class="btn btn-error" onclick="if(confirm('정말 삭제하시겠습니까?')) location.replace('doDelete?id=${article.id}');">삭제</button>
 			</c:if>
 		</div>
 	</div>
