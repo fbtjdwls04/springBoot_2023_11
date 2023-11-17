@@ -35,11 +35,11 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req,String title, String body) {
+	public String doWrite(HttpServletRequest req, int boardId, String title, String body) {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
 		
-		articleService.writeArticle(rq.getLoginedMemberId(),title, body);
+		articleService.writeArticle(rq.getLoginedMemberId(),boardId,title, body);
 		
 		int id  = articleService.getLastInsertId();
 		
@@ -48,9 +48,15 @@ public class UsrHomeArticleController {
 	
 	/** 자유게시판 */
 	@RequestMapping("/usr/article/list")
-	public String showFreeBoard(Model model, int boardId) {
+	public String showFreeBoard(HttpServletRequest req, Model model, int boardId) {
+		
+		Rq rq = (Rq) req.getAttribute("rq");
 		
 		Board board = boardService.getBoardByBoardId(boardId);
+		
+		if(board == null) {
+			return rq.jsReturnOnView("존재하지 않는 게시판입니다");
+		}
 		
 		List<Article> articles = articleService.getArticles(boardId);
 		
