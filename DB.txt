@@ -30,13 +30,9 @@ updateDate = NOW(),
 title = CONCAT('제목', CEIL(RAND()*10)),
 `body` = CONCAT('내용', CEIL(RAND()*10));
 
-
 SELECT * 
 FROM article
 ORDER BY id DESC;
-
-DELETE FROM article
-WHERE id = 1;
 
 UPDATE article
 SET title = 'dd',

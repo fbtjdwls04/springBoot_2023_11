@@ -9,20 +9,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.ArticleService;
+import com.koreaIT.demo.service.BoardService;
 import com.koreaIT.demo.vo.Article;
-import com.koreaIT.demo.vo.ResultData;
+import com.koreaIT.demo.vo.Board;
 import com.koreaIT.demo.vo.Rq;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsrHomeArticleController {
 	
 	private ArticleService articleService;
+	private BoardService boardService;
 	
-	public UsrHomeArticleController(ArticleService articleService) {
+	public UsrHomeArticleController(ArticleService articleService,BoardService boardService) {
 		this.articleService = articleService;
+		this.boardService = boardService;
 	}
 	
 	@RequestMapping("/usr/article/write")
@@ -44,12 +46,16 @@ public class UsrHomeArticleController {
 		return Util.jsReplace(Util.f("%d번 게시물이 작성되었습니다",id),Util.f("detail?id=%d",id));
 	}
 	
+	/** 자유게시판 */
 	@RequestMapping("/usr/article/list")
-	public String showList(Model model) {
+	public String showFreeBoard(Model model, int boardId) {
 		
-		List<Article> articles = articleService.getArticles();
-		int totalArticleCnt = articles.size();  
+		Board board = boardService.getBoardByBoardId(boardId);
+		
+		List<Article> articles = articleService.getArticles(boardId);
+		
 		model.addAttribute("articles",articles);
+		model.addAttribute("board",board);
 		
 		return "usr/article/list";
 	}
