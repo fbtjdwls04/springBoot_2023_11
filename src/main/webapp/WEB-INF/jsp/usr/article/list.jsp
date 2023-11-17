@@ -7,6 +7,7 @@
 	<%@ include file="../common/head.jsp" %>
    	
 	<section class="container mx-auto">
+		<p>게시물 수 :  ${articles.size() }</p>
 		<table class="table text-[16px] text-center">
 			<thead>
 				<tr>
