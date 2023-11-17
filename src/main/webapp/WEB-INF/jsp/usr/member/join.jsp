@@ -49,36 +49,36 @@
 		}
    	</script>
    	
-	<div class="container flex flex-col items-center mx-auto">
+	<section class="flex justify-center">
 		<form action="doJoin" onsubmit="joinSubmit(this); return false;" method="post">
-			<table>
+			<table class="table text-center border">
 				<tr>
 					<th>아이디</th>
-					<td><input type="text" name="loginId" autocomplete="off"></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="text" name="loginId" autocomplete="off"></td>
 				</tr>
 				<tr>
 					<th>비밀번호</th>
-					<td><input type="password" name="loginPw" /></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="password" name="loginPw" /></td>
 				</tr>
 				<tr>
 					<th>비밀번호 확인</th>
-					<td><input type="password" name="pwChk" /></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="password" name="pwChk" /></td>
 				</tr>
 				<tr>
 					<th>이름</th>
-					<td><input type="text" name="name" autocomplete="off"></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="text" name="name" autocomplete="off"></td>
 				</tr>
 				<tr>
 					<th>닉네임</th>
-					<td><input type="text" name="nickname" autocomplete="off"/></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="text" name="nickname" autocomplete="off"/></td>
 				</tr>
 				<tr>
 					<th>전화번호</th>
-					<td><input type="tel" name="cellphoneNum" autocomplete="off"/></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="tel" name="cellphoneNum" autocomplete="off"/></td>
 				</tr>
 				<tr>
 					<th>이메일</th>
-					<td><input type="email" name="email" autocomplete="off"/></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="email" name="email" autocomplete="off"/></td>
 				</tr>
 				<tr>
 					<td colspan="2">
@@ -88,5 +88,5 @@
 			</table>
 			
 		</form>
-	</div>
+	</section>
 	<%@ include file="../common/foot.jsp" %>

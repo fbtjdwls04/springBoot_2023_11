@@ -6,8 +6,8 @@
 	   	
 	<%@ include file="../common/head.jsp" %>
    	
-	<div class="container mx-auto table-box-style">
-		<table class="table">
+	<section class="container mx-auto">
+		<table class="table text-[16px] text-center">
 			<thead>
 				<tr>
 					<th>번호</th>
@@ -27,6 +27,9 @@
 				</c:forEach>
 			</tbody>
 		</table>
-	</div>
+		<div class="flex justify-end">
+			<a class="px-2 hover:underline btn" href="write">글쓰기</a>
+		</div>
+	</section>
 	
 	<%@ include file="../common/foot.jsp" %>

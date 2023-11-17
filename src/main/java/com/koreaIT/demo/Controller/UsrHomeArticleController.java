@@ -48,7 +48,7 @@ public class UsrHomeArticleController {
 	public String showList(Model model) {
 		
 		List<Article> articles = articleService.getArticles();
-		
+		int totalArticleCnt = articles.size();  
 		model.addAttribute("articles",articles);
 		
 		return "usr/article/list";

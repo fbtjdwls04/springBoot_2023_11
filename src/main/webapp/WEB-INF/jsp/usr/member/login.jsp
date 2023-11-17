@@ -24,23 +24,23 @@
 		}
    	</script>
    	
-	<div class="container flex flex-col items-center mx-auto">
-		<form class="border flex flex-col" action="doLogin" onsubmit="loginSubmit(this); return false;" method="post">
-			<table>
+	<section class="flex justify-center">
+		<form action="doLogin" onsubmit="loginSubmit(this); return false;" method="post">
+			<table class="table text-center border" >
 				<tr>
 					<th>아이디</th>
-					<td><input type="text" name="loginId" placeholder="아이디를 입력해주세요" autocomplete="off"/></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="text" name="loginId" placeholder="아이디를 입력해주세요" autocomplete="off"/></td>
 				</tr>
 				<tr>
 					<th>비밀번호</th>
-					<td><input type="password" name="loginPw" placeholder="비밀번호를 입력해주세요"/></td>
+					<td><input class="input input-bordered w-full max-w-xs" type="password" name="loginPw" placeholder="비밀번호를 입력해주세요"/></td>
 				</tr>
-				<tr>
-					<td colspan="2">
-						<button>로그인</button>
+				<tr class="hover:bg-base-200">
+					<td colspan="2" >
+						<button >로그인</button>
 					</td>
 				</tr>
 			</table>
 		</form>
-	</div>
+	</section>
 	<%@ include file="../common/foot.jsp" %>

@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html data-theme="cupcake">
+<html data-theme="light">
 <head>
 <meta charset="UTF-8">
 <!-- 테일 윈드, daisyUI -->
@@ -28,7 +28,6 @@
 					<li class="hover:underline"><a class="px-4" href="/usr/member/join">JOIN</a></li>
 				</c:if>
 				<c:if test="${rq.getLoginedMemberId() != 0 && rq.getLoginedMemberId() != null}">
-					<li class="hover:underline"><a class="px-4" href="/usr/article/write">WRITE</a></li>
 					<li class="hover:underline"><a class="px-4" href="/usr/member/doLogout">logout</a></li>
 				</c:if>
 			</ul>

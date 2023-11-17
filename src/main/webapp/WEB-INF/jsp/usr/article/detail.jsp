@@ -6,8 +6,8 @@
 	   	
 	<%@ include file="../common/head.jsp" %>
    	
-	<div class="container mx-auto table-box-style">
-		<table>
+	<section class="container mx-auto">
+		<table class="table">
 			<tr>
 				<th>번호</th>
 				<td>${article.id}</td>
@@ -34,7 +34,7 @@
 			</tr>
 		</table>
 		<hr />
-		<div class="flex">
+		<div class="flex mt-[20px]">
 			<button onclick="history.back()">뒤로가기</button>
 			<div class="flex-grow"></div>
 			<c:if test="${loginedMemberId == article.memberId }">
@@ -42,5 +42,5 @@
 				<button class="btn btn-error" onclick="if(confirm('정말 삭제하시겠습니까?')) location.replace('doDelete?id=${article.id}');">삭제</button>
 			</c:if>
 		</div>
-	</div>
+	</section>
 	<%@ include file="../common/foot.jsp" %>

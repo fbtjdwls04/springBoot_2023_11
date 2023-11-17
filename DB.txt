@@ -5,6 +5,7 @@ USE SB_AM;
 CREATE TABLE article(
     id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
     memberId INT UNSIGNED NOT NULL,
+    boardId INT UNSIGNED NOT NULL,
     regDate DATETIME NOT NULL,
     updateDate DATETIME NOT NULL,
     title VARCHAR(100) NOT NULL,
@@ -13,15 +14,22 @@ CREATE TABLE article(
 
 TRUNCATE article;
 
-SHOW TABLES;
-DESC article;
-
 INSERT INTO article
-SET memberId = 2,
+SET memberId = 1,
+boardId = 1,
 regDate = NOW(),
 updateDate = NOW(),
 title = CONCAT('제목', CEIL(RAND()*10)),
 `body` = CONCAT('내용', CEIL(RAND()*10));
+
+INSERT INTO article
+SET memberId = 2,
+boardId = 2,
+regDate = NOW(),
+updateDate = NOW(),
+title = CONCAT('제목', CEIL(RAND()*10)),
+`body` = CONCAT('내용', CEIL(RAND()*10));
+
 
 SELECT * 
 FROM article
@@ -66,10 +74,10 @@ email = 'admin@admin.com';
 INSERT INTO `member`
 SET regDate = NOW(),
 updateDate = NOW(),
-loginId = 'a',
-loginPw = 'a',
-`name` = 'a',
-nickname = 'a',
+loginId = 'abc',
+loginPw = 'abc',
+`name` = 'abc',
+nickname = 'abc',
 cellphoneNum = '010-0000-0000',
 email = 'a@admin.com';
 
@@ -84,12 +92,31 @@ cellphoneNum = '010-0000-0000',
 email = 'b@admin.com';
 
 SELECT * FROM `member`;
-DELETE FROM `member` WHERE id > 1;
 
 SELECT * 
 FROM article AS a 
 INNER JOIN `member` AS m 
 ON a.memberId = m.id 
-ORDER BY a.id DESC
+ORDER BY a.id DESC;
+
+CREATE TABLE board(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    `code` VARCHAR(20) NOT NULL COMMENT 'notice(공지사항), free(자유), ...',
+    `name` VARCHAR(20) NOT NULL COMMENT '게시판 이름'
+);
+
+INSERT INTO board
+SET `code` = 'notice',
+`name` = '공지사항',
+regDate = NOW(),
+updateDate = NOW();
+
+INSERT INTO board
+SET `code` = 'free',
+`name` = '자유',
+regDate = NOW(),
+updateDate = NOW();
 
 
