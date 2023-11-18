@@ -33,11 +33,13 @@
 	</div>
 
 	<div class="flex justify-center items-center flex-wrap">
-	
+
 		<c:if test="${beginPage > 1}">
-			<a href="list?boardId=${board.id }&boardPage=${beginPage-10}"><i class="fa-solid fa-caret-left"></i></a>
+			<a class="text-2xl" href="list?boardId=${board.id }&boardPage=${beginPage-10}"> 
+				<i class="fa-solid fa-caret-left"></i>
+			</a>
 		</c:if>
-		
+
 		<c:forEach var="i" begin="${beginPage }" end="${endPage }" step="1">
 			<c:if test="${i <= totalPage }">
 				<a
@@ -45,9 +47,11 @@
 					href="list?boardId=${board.id }&boardPage=${i}">${i}</a>
 			</c:if>
 		</c:forEach>
-		
-		<c:if test="${beginPage < totalPage }">
-			<a href="list?boardId=${board.id }&boardPage=${beginPage+10}"><i class="fa-solid fa-caret-right"></i></a>
+
+		<c:if test="${endPage < totalPage }">
+			<a class="text-2xl" href="list?boardId=${board.id }&boardPage=${beginPage+10}">
+				<i class="fa-solid fa-caret-right"></i>
+			</a>
 		</c:if>
 	</div>
 </section>
