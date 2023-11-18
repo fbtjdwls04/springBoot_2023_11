@@ -14,8 +14,7 @@ public class BoardService {
 		this.boardDao = boardDao;
 	}
 	
-	public Board getBoardByBoardId(int boardId) {
-		return boardDao.getBoardByBoardId(boardId);
+	public Board getBoardById(int boardId) {
+		return boardDao.getBoardById(boardId);
 	}
-
 }

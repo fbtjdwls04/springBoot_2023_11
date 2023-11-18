@@ -36,8 +36,8 @@
 					<td><input class="input input-bordered w-full max-w-xs" type="password" name="loginPw" placeholder="비밀번호를 입력해주세요"/></td>
 				</tr>
 				<tr class="hover:bg-base-200">
-					<td colspan="2" >
-						<button >로그인</button>
+					<td colspan="2" class="p-0">
+						<button class="hover:bg-gray-200 w-full text-center py-4">로그인</button>
 					</td>
 				</tr>
 			</table>

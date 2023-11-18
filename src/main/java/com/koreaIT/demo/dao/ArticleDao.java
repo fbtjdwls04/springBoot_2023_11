@@ -29,8 +29,16 @@ public interface ArticleDao {
 			 	ON a.memberId = m.id
 			 	WHERE a.boardId = #{boardId}
 				ORDER BY a.id DESC
+			 	LIMIT #{boardPage},10
 			""")
-	public List<Article> getArticles(int boardId);
+	public List<Article> getArticles(int boardId, int boardPage);
+	
+	@Select("""
+			SELECT COUNT(*)
+			FROM article
+			WHERE boardId = #{boardId}
+		""")
+	public int getArticleCntById(int boardId);
 	
 	@Select("""
 			SELECT *
@@ -71,4 +79,10 @@ public interface ArticleDao {
 	
 	@Select("SELECT LAST_INSERT_ID()")
 	public int getLastInsertId();
+
+	@Select("""
+				SELECT MAX(id)
+				FROM article
+			""")
+	public int getLastArticleId();
 }

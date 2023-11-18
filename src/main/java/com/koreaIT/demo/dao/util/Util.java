@@ -49,4 +49,12 @@ public class Util {
 					</script>
 				""", msg, uri);
 	}
+
+	public static int getBeginPage(int boardPage) {
+		return boardPage%10 == 0 ? boardPage - 9 : boardPage - boardPage%10 + 1;
+	}
+
+	public static int getEndPage(int boardPage) {
+		return boardPage%10 == 0 ? boardPage : getBeginPage(boardPage) + 9;
+	}
 }

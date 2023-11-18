@@ -81,8 +81,8 @@
 					<td><input class="input input-bordered w-full max-w-xs" type="email" name="email" autocomplete="off"/></td>
 				</tr>
 				<tr>
-					<td colspan="2">
-						<button class="w-full text-center">가입완료</button>
+					<td colspan="2" class="p-0">
+						<button class="hover:bg-gray-200 w-full text-center py-4">가입완료</button>
 					</td>
 				</tr>
 			</table>

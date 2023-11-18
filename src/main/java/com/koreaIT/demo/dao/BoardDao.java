@@ -13,6 +13,5 @@ public interface BoardDao {
 				FROM board
 				WHERE id = #{boardId}
 			""")
-	public Board getBoardByBoardId(int boardId);
-	
+	public Board getBoardById(int boardId);
 }

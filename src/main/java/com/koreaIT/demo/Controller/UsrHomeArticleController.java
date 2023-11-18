@@ -48,20 +48,33 @@ public class UsrHomeArticleController {
 	
 	/** 자유게시판 */
 	@RequestMapping("/usr/article/list")
-	public String showFreeBoard(HttpServletRequest req, Model model, int boardId) {
+	public String showList(HttpServletRequest req, Model model, int boardId, int boardPage) {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
 		
-		Board board = boardService.getBoardByBoardId(boardId);
+		Board board = boardService.getBoardById(boardId);
+		
+		int articleCnt = articleService.getArticleCntById(boardId);
+		
+		int lastArticleId = articleService.getLastArticleId();
+		
+		int totalPage = (int) Math.ceil((double)articleCnt/10);
+		int beginPage = Util.getBeginPage(boardPage);
+		int endPage = Util.getEndPage(boardPage);
 		
 		if(board == null) {
 			return rq.jsReturnOnView("존재하지 않는 게시판입니다");
 		}
 		
-		List<Article> articles = articleService.getArticles(boardId);
+		List<Article> articles = articleService.getArticles(boardId, boardPage);
 		
 		model.addAttribute("articles",articles);
 		model.addAttribute("board",board);
+		model.addAttribute("articleCnt",articleCnt);
+		model.addAttribute("totalPage",totalPage);
+		model.addAttribute("boardPage",boardPage);
+		model.addAttribute("beginPage",beginPage);
+		model.addAttribute("endPage",endPage);
 		
 		return "usr/article/list";
 	}
@@ -99,7 +112,6 @@ public class UsrHomeArticleController {
 		}
 		
 		model.addAttribute("article",article);
-		
 		return "usr/article/modify";
 	}
 	
@@ -112,7 +124,7 @@ public class UsrHomeArticleController {
 		Article article = articleService.getArticleById(id);
 		
 		if(article == null) {
-			return Util.jsReplace("게시글이 존재하지 않습니다", "list");
+			return Util.jsHistoryBack("게시글이 존재하지 않습니다");
 		}
 		
 		if(rq.getLoginedMemberId() != article.getMemberId()) {
@@ -131,7 +143,7 @@ public class UsrHomeArticleController {
 		Rq rq = (Rq) req.getAttribute("rq");
 		
 		Article article = articleService.getArticleById(id);
-
+		
 		if(article == null) {	
 			return Util.jsHistoryBack(Util.f("%d번 게시글은 존재하지 않습니다",id));
 		}
@@ -139,10 +151,12 @@ public class UsrHomeArticleController {
 		if(rq.getLoginedMemberId() != article.getMemberId()) {
 			return Util.jsHistoryBack(Util.f("권한이 없습니다.",id));
 		}
+
+		int boardId = article.getBoardId();
 		
 		articleService.deleteArticle(id);
 		
-		return Util.jsReplace(Util.f("%d번 게시물을 삭제하였습니다",id),"list");
+		return Util.jsReplace(Util.f("%d번 게시물을 삭제하였습니다",id),Util.f("list?boardId=%d&boardPage=1",boardId));
 	}
 	
 }

@@ -22,8 +22,8 @@
 			<div class="grow"></div>
 			<ul class="flex text-2xl">
 				<li class="hover:underline"><a class="px-4" href="/">HOME</a></li>
-				<li class="hover:underline"><a class="px-4" href="/usr/article/list?boardId=1">공지사항</a></li>
-				<li class="hover:underline"><a class="px-4" href="/usr/article/list?boardId=2">자유게시판</a></li>
+				<li class="hover:underline"><a class="px-4" href="/usr/article/list?boardId=1&boardPage=1">공지사항</a></li>
+				<li class="hover:underline"><a class="px-4" href="/usr/article/list?boardId=2&boardPage=1">자유게시판</a></li>
 				<c:if test="${rq.getLoginedMemberId() == 0 || rq.getLoginedMemberId() == null }">
 					<li class="hover:underline"><a class="px-4" href="/usr/member/login">LOGIN</a></li>
 					<li class="hover:underline"><a class="px-4" href="/usr/member/join">JOIN</a></li>
