@@ -21,22 +21,13 @@ public class ArticleService {
 		articleDao.writeArticle(memberId,boardId,title,body);
 	}
 
-	public List<Article> getArticles(int boardId, int boardPage) {
+	public List<Article> getArticles(int boardId, int boardPage, String searchType, String searchMsg) {
 		boardPage = (boardPage-1)*10;
-		return articleDao.getArticles(boardId, boardPage);
+		return articleDao.getArticles(boardId, boardPage, searchType, searchMsg);
 	}
 
-	public int getArticleCntById(int boardId) {
-		return articleDao.getArticleCntById(boardId);
-	}
-	
-	public List<Article> getSearchArticles(int boardId, int boardPage, String searchMsg) {
-		boardPage = (boardPage-1)*10;
-		return articleDao.getSearchArticles( boardId, boardPage, searchMsg);
-	}
-	
-	public int getSearchArticlesCntById(int boardId, String searchMsg) {
-		return articleDao.getSearchArticlesCntById(boardId, searchMsg);
+	public int getArticleCntById(int boardId, String searchType, String searchMsg) {
+		return articleDao.getArticleCntById(boardId, searchType, searchMsg);
 	}
 	
 	public Article getArticleById(int id) {

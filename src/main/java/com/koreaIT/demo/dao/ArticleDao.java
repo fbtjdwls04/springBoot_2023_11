@@ -23,42 +23,46 @@ public interface ArticleDao {
 	public void writeArticle(int memberId, int boardId, String title, String body);
 	
 	@Select("""
+			<script>
 			SELECT a.*, m.name AS writerName
 				FROM article AS a
 			 	INNER JOIN member AS m
 			 	ON a.memberId = m.id
 			 	WHERE a.boardId = #{boardId}
+			 	<if test='searchType == "title"'>
+			 		AND a.title LIKE CONCAT('%',#{searchMsg},'%')
+			 	</if>
+			 	<if test='searchType == "body"'>
+			 		AND a.body LIKE CONCAT('%',#{searchMsg},'%')
+			 	</if>
+			 	<if test='searchType == "writerName"'>
+			 		AND m.name LIKE CONCAT('%',#{searchMsg},'%')
+		 		</if>
 				ORDER BY a.id DESC
 			 	LIMIT #{boardPage},10
+			</script>
 			""")
-	public List<Article> getArticles(int boardId, int boardPage);
+	public List<Article> getArticles(int boardId, int boardPage, String searchType, String searchMsg);
 	
 	@Select("""
-			SELECT a.*, m.name AS writerName
+			<script>
+			SELECT COUNT(*)
 				FROM article AS a
 			 	INNER JOIN member AS m
 			 	ON a.memberId = m.id
 			 	WHERE a.boardId = #{boardId}
-			 	AND a.title LIKE CONCAT('%',#{searchMsg},'%')
-				ORDER BY a.id DESC
-			 	LIMIT #{boardPage},10
-			""")
-	public List<Article> getSearchArticles(int boardId, int boardPage, String searchMsg);
-	
-	@Select("""
-			SELECT COUNT(*)
-			FROM article
-			WHERE boardId = #{boardId}
+			 	<if test='searchType == "title"'>
+			 		AND a.title LIKE CONCAT('%',#{searchMsg},'%')
+			 	</if>
+			 	<if test='searchType == "body"'>
+			 		AND a.body LIKE CONCAT('%',#{searchMsg},'%')
+			 	</if>
+			 	<if test='searchType == "writerName"'>
+			 		AND m.name LIKE CONCAT('%',#{searchMsg},'%')
+		 		</if>
+			</script>
 		""")
-	public int getArticleCntById(int boardId);
-	
-	@Select("""
-			SELECT COUNT(*)
-			FROM article
-			WHERE boardId = #{boardId}
-			AND title LIKE CONCAT('%',#{searchMsg},'%')
-		""")
-	public int getSearchArticlesCntById(int boardId, String searchMsg);
+	public int getArticleCntById(int boardId, String searchType, String searchMsg);
 	
 	@Select("""
 			SELECT *

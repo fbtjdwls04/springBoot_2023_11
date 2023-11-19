@@ -47,14 +47,13 @@ public class UsrHomeArticleController {
 	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(HttpServletRequest req, Model model, int boardId, int boardPage) {
+	public String showList(HttpServletRequest req, Model model, int boardId, int boardPage, String searchType ,String searchMsg) {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
 		
 		Board board = boardService.getBoardById(boardId);
 		
-		int articleCnt = articleService.getArticleCntById(boardId);
-		
+		int articleCnt = articleService.getArticleCntById(boardId, searchType, searchMsg);
 		int totalPage = (int) Math.ceil((double)articleCnt/10);
 		int beginPage = Util.getBeginPage(boardPage);
 		int endPage = Util.getEndPage(boardPage);
@@ -63,7 +62,7 @@ public class UsrHomeArticleController {
 			return rq.jsReturnOnView("존재하지 않는 게시판입니다");
 		}
 		
-		List<Article> articles = articleService.getArticles(boardId, boardPage);
+		List<Article> articles = articleService.getArticles(boardId, boardPage, searchType, searchMsg);
 		
 		model.addAttribute("articles",articles);
 		model.addAttribute("board",board);
@@ -72,39 +71,10 @@ public class UsrHomeArticleController {
 		model.addAttribute("boardPage",boardPage);
 		model.addAttribute("beginPage",beginPage);
 		model.addAttribute("endPage",endPage);
-		
-		return "usr/article/list";
-	}
-	
-	@RequestMapping("/usr/article/searchList")
-	public String showSearchList(HttpServletRequest req, Model model, int boardId, int boardPage, String searchMsg) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
-		
-		Board board = boardService.getBoardById(boardId);
-		
-		int articleCnt = articleService.getSearchArticlesCntById(boardId, searchMsg);
-		
-		int totalPage = (int) Math.ceil((double)articleCnt/10);
-		int beginPage = Util.getBeginPage(boardPage);
-		int endPage = Util.getEndPage(boardPage);
-		
-		if(board == null) {
-			return rq.jsReturnOnView("존재하지 않는 게시판입니다");
-		}
-		
-		List<Article> articles = articleService.getSearchArticles(boardId, boardPage, searchMsg);
-		
-		model.addAttribute("articles",articles);
-		model.addAttribute("board",board);
-		model.addAttribute("articleCnt",articleCnt);
-		model.addAttribute("totalPage",totalPage);
-		model.addAttribute("boardPage",boardPage);
-		model.addAttribute("beginPage",beginPage);
-		model.addAttribute("endPage",endPage);
+		model.addAttribute("searchType",searchType);
 		model.addAttribute("searchMsg",searchMsg);
 		
-		return "usr/article/searchList";
+		return "usr/article/list";
 	}
 	
 	@RequestMapping("/usr/article/detail")
