@@ -1,5 +1,6 @@
 package com.koreaIT.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -24,9 +25,18 @@ public class ArticleService {
 		boardPage = (boardPage-1)*10;
 		return articleDao.getArticles(boardId, boardPage);
 	}
-	
+
 	public int getArticleCntById(int boardId) {
 		return articleDao.getArticleCntById(boardId);
+	}
+	
+	public List<Article> getSearchArticles(int boardId, int boardPage, String searchMsg) {
+		boardPage = (boardPage-1)*10;
+		return articleDao.getSearchArticles( boardId, boardPage, searchMsg);
+	}
+	
+	public int getSearchArticlesCntById(int boardId, String searchMsg) {
+		return articleDao.getSearchArticlesCntById(boardId, searchMsg);
 	}
 	
 	public Article getArticleById(int id) {

@@ -7,7 +7,7 @@
 <%@ include file="../common/head.jsp"%>
 
 <section class="container mx-auto">
-	<p>게시물 수 : ${articleCnt }</p>
+	<p>검색된 게시물 수 : ${articleCnt }</p>
 	<table class="table text-[16px] text-center">
 		<thead>
 			<tr>
@@ -35,7 +35,7 @@
 	<div class="flex justify-center items-center flex-wrap">
 
 		<c:if test="${beginPage > 1}">
-			<a class="text-2xl" href="list?boardId=${board.id }&boardPage=${beginPage-10}"> 
+			<a class="text-2xl" href="searchList?boardId=${board.id }&boardPage=${beginPage-10}&searchMsg=${searchMsg}"> 
 				<i class="fa-solid fa-caret-left"></i>
 			</a>
 		</c:if>
@@ -44,12 +44,12 @@
 			<c:if test="${i <= totalPage }">
 				<a
 					class="mx-2 hover:underline <c:if test="${i == boardPage }">text-2xl bg-gray-200</c:if>"
-					href="list?boardId=${board.id }&boardPage=${i}">${i}</a>
+					href="searchList?boardId=${board.id }&boardPage=${i}&searchMsg=${searchMsg}">${i}</a>
 			</c:if>
 		</c:forEach>
 
 		<c:if test="${endPage < totalPage }">
-			<a class="text-2xl" href="list?boardId=${board.id }&boardPage=${beginPage+10}">
+			<a class="text-2xl" href="searchList?boardId=${board.id }&boardPage=${beginPage+10}&searchMsg=${searchMsg}">
 				<i class="fa-solid fa-caret-right"></i>
 			</a>
 		</c:if>
@@ -58,7 +58,7 @@
 		<form action="searchList">
 			<input type="hidden" name="boardId" value="${board.id }"/>
 			<input type="hidden" name="boardPage" value="1"/>
-			<input class="input input-bordered w-full max-w-xs" type="text" name="searchMsg"/>
+			<input class="input input-bordered w-full max-w-xs" type="text" name="searchMsg" value="${searchMsg }"/>
 		</form>
 	</div>
 </section>

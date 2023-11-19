@@ -5,6 +5,7 @@
 <c:set var="pageTitle" value="ARTICLE WRITE" />
 
 <%@ include file="../common/head.jsp"%>
+
 <script>
 	function modifySubmit(e) {
 
@@ -24,7 +25,7 @@
 	}
 </script>
 
-<section class="container mx-auto">
+<section class="container mx-auto flex justify-center">
 	<form action="doModify"
 		onsubmit="modifySubmit(this); return false;" method="post">
 		<input type="hidden" name="id" value="${article.id }" />
@@ -61,4 +62,5 @@
 		</div>
 	</form>
 </section>
+
 <%@ include file="../common/foot.jsp"%>

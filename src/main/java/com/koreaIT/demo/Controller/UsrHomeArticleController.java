@@ -46,7 +46,6 @@ public class UsrHomeArticleController {
 		return Util.jsReplace(Util.f("%d번 게시물이 작성되었습니다",id),Util.f("detail?id=%d",id));
 	}
 	
-	/** 자유게시판 */
 	@RequestMapping("/usr/article/list")
 	public String showList(HttpServletRequest req, Model model, int boardId, int boardPage) {
 		
@@ -55,8 +54,6 @@ public class UsrHomeArticleController {
 		Board board = boardService.getBoardById(boardId);
 		
 		int articleCnt = articleService.getArticleCntById(boardId);
-		
-		int lastArticleId = articleService.getLastArticleId();
 		
 		int totalPage = (int) Math.ceil((double)articleCnt/10);
 		int beginPage = Util.getBeginPage(boardPage);
@@ -77,6 +74,37 @@ public class UsrHomeArticleController {
 		model.addAttribute("endPage",endPage);
 		
 		return "usr/article/list";
+	}
+	
+	@RequestMapping("/usr/article/searchList")
+	public String showSearchList(HttpServletRequest req, Model model, int boardId, int boardPage, String searchMsg) {
+		
+		Rq rq = (Rq) req.getAttribute("rq");
+		
+		Board board = boardService.getBoardById(boardId);
+		
+		int articleCnt = articleService.getSearchArticlesCntById(boardId, searchMsg);
+		
+		int totalPage = (int) Math.ceil((double)articleCnt/10);
+		int beginPage = Util.getBeginPage(boardPage);
+		int endPage = Util.getEndPage(boardPage);
+		
+		if(board == null) {
+			return rq.jsReturnOnView("존재하지 않는 게시판입니다");
+		}
+		
+		List<Article> articles = articleService.getSearchArticles(boardId, boardPage, searchMsg);
+		
+		model.addAttribute("articles",articles);
+		model.addAttribute("board",board);
+		model.addAttribute("articleCnt",articleCnt);
+		model.addAttribute("totalPage",totalPage);
+		model.addAttribute("boardPage",boardPage);
+		model.addAttribute("beginPage",beginPage);
+		model.addAttribute("endPage",endPage);
+		model.addAttribute("searchMsg",searchMsg);
+		
+		return "usr/article/searchList";
 	}
 	
 	@RequestMapping("/usr/article/detail")

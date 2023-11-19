@@ -30,6 +30,7 @@ updateDate = NOW(),
 title = CONCAT('제목', CEIL(RAND()*10)),
 `body` = CONCAT('내용', CEIL(RAND()*10));
 
+
 SELECT * 
 FROM article
 ORDER BY id DESC;
@@ -103,6 +104,8 @@ CREATE TABLE board(
     `name` VARCHAR(20) NOT NULL COMMENT '게시판 이름'
 );
 
+TRUNCATE board;
+
 INSERT INTO board
 SET `code` = 'notice',
 `name` = '공지사항',
@@ -115,4 +118,10 @@ SET `code` = 'free',
 regDate = NOW(),
 updateDate = NOW();
 
+SELECT * FROM board;
+SELECT * 
+FROM article
+ORDER BY id DESC
+LIMIT 10,10;
 
+SELECT MAX(id) FROM article;

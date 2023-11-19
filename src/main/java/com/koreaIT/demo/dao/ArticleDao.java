@@ -34,11 +34,31 @@ public interface ArticleDao {
 	public List<Article> getArticles(int boardId, int boardPage);
 	
 	@Select("""
+			SELECT a.*, m.name AS writerName
+				FROM article AS a
+			 	INNER JOIN member AS m
+			 	ON a.memberId = m.id
+			 	WHERE a.boardId = #{boardId}
+			 	AND a.title LIKE CONCAT('%',#{searchMsg},'%')
+				ORDER BY a.id DESC
+			 	LIMIT #{boardPage},10
+			""")
+	public List<Article> getSearchArticles(int boardId, int boardPage, String searchMsg);
+	
+	@Select("""
 			SELECT COUNT(*)
 			FROM article
 			WHERE boardId = #{boardId}
 		""")
 	public int getArticleCntById(int boardId);
+	
+	@Select("""
+			SELECT COUNT(*)
+			FROM article
+			WHERE boardId = #{boardId}
+			AND title LIKE CONCAT('%',#{searchMsg},'%')
+		""")
+	public int getSearchArticlesCntById(int boardId, String searchMsg);
 	
 	@Select("""
 			SELECT *
@@ -85,4 +105,5 @@ public interface ArticleDao {
 				FROM article
 			""")
 	public int getLastArticleId();
+
 }
