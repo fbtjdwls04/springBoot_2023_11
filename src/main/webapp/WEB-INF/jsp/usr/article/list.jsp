@@ -42,23 +42,38 @@
 	<!-- 페이지 리스트 시작 -->
 	<div class="flex justify-center items-center flex-wrap">
 		
-		<c:if test="${beginPage > 1}">
-			<a class="text-2xl" href="list?boardId=${board.id }&boardPage=${beginPage-10}&searchType=${searchType}&searchMsg=${searchMsg}"> 
-				<i class="fa-solid fa-caret-left"></i>
+		<c:if test="${beginPage > 10}">
+			<a class="text-[17px] mx-6" href="list?boardId=${board.id }&boardPage=1&searchType=${searchType}&searchMsg=${searchMsg}"> 
+				<i class="fa-solid fa-backward"></i>
 			</a>
 		</c:if>
-
-		<c:forEach var="i" begin="${beginPage }" end="${endPage }" step="1">
-			<c:if test="${i <= totalPage }">
-				<a
-					class="mx-2 hover:underline <c:if test="${i == boardPage }">text-2xl bg-gray-200</c:if>"
-					href="list?boardId=${board.id }&boardPage=${i}&searchType=${searchType}&searchMsg=${searchMsg}">${i}</a>
-			</c:if>
-		</c:forEach>
+		
+		<c:if test="${beginPage > 1}">
+			<a class="flex justify-center items-center" href="list?boardId=${board.id }&boardPage=${beginPage-10}&searchType=${searchType}&searchMsg=${searchMsg}"> 
+				<i class="fa-solid fa-caret-left text-2xl"></i>
+				<span>이전 | </span>
+			</a>
+		</c:if>
+		<div class="mx-4">
+			<c:forEach var="i" begin="${beginPage }" end="${endPage }" step="1">
+				<c:if test="${i <= totalPage }">
+					<a
+						class="mx-2 hover:underline <c:if test="${i == boardPage }">text-2xl bg-gray-200</c:if>"
+						href="list?boardId=${board.id }&boardPage=${i}&searchType=${searchType}&searchMsg=${searchMsg}">${i}</a>
+				</c:if>
+			</c:forEach>
+		</div>
 
 		<c:if test="${endPage < totalPage }">
-			<a class="text-2xl" href="list?boardId=${board.id }&boardPage=${beginPage+10}&searchType=${searchType}&searchMsg=${searchMsg}">
-				<i class="fa-solid fa-caret-right"></i>
+			<a class="flex justify-center items-center" href="list?boardId=${board.id }&boardPage=${beginPage+10}&searchType=${searchType}&searchMsg=${searchMsg}">
+				<span> | 다음</span>
+				<i class="fa-solid fa-caret-right text-2xl"></i>
+			</a>
+		</c:if>
+		
+		<c:if test="${beginPage + 10 < totalPage }">
+			<a class="text-[17px] mx-6" href="list?boardId=${board.id }&boardPage=${totalPage}&searchType=${searchType}&searchMsg=${searchMsg}">
+				<i class="fa-solid fa-forward"></i>
 			</a>
 		</c:if>
 	</div>
