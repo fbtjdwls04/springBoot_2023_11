@@ -43,8 +43,8 @@
 	<div class="flex justify-center items-center flex-wrap">
 		
 		<c:if test="${beginPage > 10}">
-			<a class="text-[17px] mx-6" href="list?boardId=${board.id }&boardPage=1&searchType=${searchType}&searchMsg=${searchMsg}"> 
-				<i class="fa-solid fa-backward"></i>
+			<a class="text-[20px] mx-6" href="list?boardId=${board.id }&boardPage=1&searchType=${searchType}&searchMsg=${searchMsg}"> 
+				<i class="fa-solid fa-backward flex items-center"></i>
 			</a>
 		</c:if>
 		
@@ -72,8 +72,8 @@
 		</c:if>
 		
 		<c:if test="${beginPage + 10 < totalPage }">
-			<a class="text-[17px] mx-6" href="list?boardId=${board.id }&boardPage=${totalPage}&searchType=${searchType}&searchMsg=${searchMsg}">
-				<i class="fa-solid fa-forward"></i>
+			<a class="text-[20px] mx-6" href="list?boardId=${board.id }&boardPage=${totalPage}&searchType=${searchType}&searchMsg=${searchMsg}">
+				<i class="fa-solid fa-forward flex items-center"></i>
 			</a>
 		</c:if>
 	</div>

@@ -2,6 +2,10 @@ package com.koreaIT.demo.vo;
 
 import java.io.IOException;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
 import com.koreaIT.demo.dao.util.Util;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 
+@Component
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Rq {
 	
 	@Getter
@@ -16,6 +22,7 @@ public class Rq {
 	HttpServletResponse res;
 	HttpSession session;
 	HttpServletRequest req;
+	
 	public Rq(HttpServletRequest req, HttpServletResponse response) {
 		this.res = response;
 		this.req = req;
@@ -28,6 +35,8 @@ public class Rq {
 		}
 		
 		this.loginedMemberId = loginedMemberId;
+		
+		this.req.setAttribute("rq", this);
 	}
 
 	public void jsPrintHistoryBack(String msg) {
@@ -53,6 +62,9 @@ public class Rq {
 		req.setAttribute("msg", msg);
 		
 		return "usr/common/js";
+	}
+
+	public void init() {
 	}
 
 }

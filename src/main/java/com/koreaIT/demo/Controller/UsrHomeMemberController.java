@@ -18,9 +18,11 @@ import jakarta.servlet.http.HttpSession;
 public class UsrHomeMemberController {
 	
 	private MemberService memberService;
+	private Rq rq;
 	
-	public UsrHomeMemberController(MemberService memberService) {
+	public UsrHomeMemberController(MemberService memberService,Rq rq) {
 		this.memberService = memberService;
+		this.rq = rq;
 	}
 	@RequestMapping("/usr/member/join")
 	public String join() {
@@ -74,9 +76,7 @@ public class UsrHomeMemberController {
 	
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doLogin(String loginId, String loginPw) {
 		
 		if(Util.empty(loginId)) {
 			return Util.jsHistoryBack("아이디를 입력해주세요");
@@ -99,9 +99,7 @@ public class UsrHomeMemberController {
 	
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
-	public String doLogout(HttpServletRequest req) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doLogout() {
 		
 		rq.logout();
 		

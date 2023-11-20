@@ -21,10 +21,12 @@ public class UsrHomeArticleController {
 	
 	private ArticleService articleService;
 	private BoardService boardService;
+	private Rq rq;
 	
-	public UsrHomeArticleController(ArticleService articleService,BoardService boardService) {
+	public UsrHomeArticleController(ArticleService articleService,BoardService boardService,Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
+		this.rq = rq;
 	}
 	
 	@RequestMapping("/usr/article/write")
@@ -35,9 +37,7 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public String doWrite(HttpServletRequest req, int boardId, String title, String body) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doWrite(int boardId, String title, String body) {
 		
 		articleService.writeArticle(rq.getLoginedMemberId(),boardId,title, body);
 		
@@ -47,9 +47,7 @@ public class UsrHomeArticleController {
 	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(HttpServletRequest req, Model model, int boardId, int boardPage, String searchType ,String searchMsg) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String showList(Model model, int boardId, int boardPage, String searchType ,String searchMsg) {
 		
 		Board board = boardService.getBoardById(boardId);
 		
@@ -78,9 +76,7 @@ public class UsrHomeArticleController {
 	}
 	
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(HttpServletRequest req,Model model,int id) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String showDetail(Model model,int id) {
 		
 		Article article = articleService.forPrintArticle(id);
 		
@@ -95,9 +91,7 @@ public class UsrHomeArticleController {
 	}
 	
 	@RequestMapping("/usr/article/modify")
-	public String modify(HttpServletRequest req, Model model, int id) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String modify(Model model, int id) {
 		
 		Article article = articleService.forPrintArticle(id);
 		
@@ -115,9 +109,7 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public String doModify(HttpServletRequest req, int id, String title, String body) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doModify(int id, String title, String body) {
 		
 		Article article = articleService.getArticleById(id);
 		
@@ -136,9 +128,7 @@ public class UsrHomeArticleController {
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(HttpServletRequest req, int id) {
-		
-		Rq rq = (Rq) req.getAttribute("rq");
+	public String doDelete(int id) {
 		
 		Article article = articleService.getArticleById(id);
 		
