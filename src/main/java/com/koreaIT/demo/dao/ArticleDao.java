@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.koreaIT.demo.vo.Article;
 
@@ -45,10 +46,10 @@ public interface ArticleDao {
 			 		AND m.name LIKE CONCAT('%',#{searchMsg},'%')
 		 		</if>
 				ORDER BY a.id DESC
-			 	LIMIT #{startLimit},10
+			 	LIMIT #{startLimit},#{itemsInAPage}
 			</script>
 			""")
-	public List<Article> getArticles(int boardId, int startLimit, String searchType, String searchMsg);
+	public List<Article> getArticles(int boardId, int startLimit, int itemsInAPage, String searchType, String searchMsg);
 	
 	@Select("""
 			<script>
@@ -98,7 +99,7 @@ public interface ArticleDao {
 			""")
 	public void deleteArticle(int id);
 	
-	@Select("""
+	@Update("""
 			<script>
 				UPDATE article 
 					SET updateDate = NOW() 
@@ -121,5 +122,20 @@ public interface ArticleDao {
 				FROM article
 			""")
 	public int getLastArticleId();
+
+	@Update("""
+				UPDATE article 
+					SET hitCount = hitCount + 1 
+					WHERE id = #{id}
+			""")
+	public int increaseHitCount(int id);
+
+	
+	@Select("""
+			SELECT hitCount
+				FROM article
+				WHERE id = #{id}
+			""")
+	public int getArticleHitCount(int id);
 
 }

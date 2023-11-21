@@ -2,9 +2,29 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="ARTICLE DETAIL" />
+	<c:set var="pageTitle" value="ARTICLE DETAIL" />
+	
+	<%@ include file="../common/head.jsp" %>
+	
+	<script>
+		const articleDetail_increaseHitCount = function() {
+			$.ajax({
+				url: "doIncreaseHitCount",
+				method: "get",
+				data: {"id": parseInt('${param.id }')},
+				dataType: "json",
+				success: function(data) {
+					$("#increaseHitCount").html(data.data);
+				},
+				error: function(xhr, status, error) {
+					console.error("ERROR : " + status + " - " + error);
+				}
+			})
+		}
+		
+		articleDetail_increaseHitCount();
+	</script>
    	
-<%@ include file="../common/head.jsp" %>
   	
 	<section class="flex justify-center ">
 		<div class="container">
@@ -20,6 +40,10 @@
 				<tr>
 					<th>수정일</th>
 					<td>${article.updateDate.substring(2,16) }</td>
+				</tr>
+				<tr>
+					<th>조회수</th>
+					<td><span id="increaseHitCount">${article.hitCount }</span></td>
 				</tr>
 				<tr>
 					<th>작성자</th>

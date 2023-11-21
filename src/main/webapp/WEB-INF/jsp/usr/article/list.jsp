@@ -18,6 +18,7 @@
 				<th>제목</th>
 				<th width="150">작성자</th>
 				<th width="200">작성일</th>
+				<th width="100">조회수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -28,6 +29,7 @@
 					<td class="hover:underline"><a href="detail?id=${article.id}">${article.title}</a></td>
 					<td>${article.writerName}</td>
 					<td>${article.regDate.substring(2,16)}</td>
+					<td>${article.hitCount}</td>
 				</tr>
 			</c:forEach>
 			<!-- 게시물 리스트 끝 -->
@@ -48,11 +50,11 @@
 	<div class="flex justify-center items-center flex-wrap">
 
 		<c:set var="baseUri"
-			value="searchType=${searchType}&searchMsg=${searchMsg}"></c:set>
+			value="boardId=${board.id }&searchType=${searchType}&searchMsg=${searchMsg}"></c:set>
 		<!-- 페이지 처음으로 시작 -->
 		<c:if test="${beginPage > 10}">
 			<a class="text-[20px] mx-6"
-				href="list?boardId=${board.id }&boardPage=1&${baseUri}"> <i
+				href="list?boardPage=1&${baseUri}"> <i
 				class="fa-solid fa-backward flex items-center"></i>
 			</a>
 		</c:if>
@@ -60,7 +62,7 @@
 		<!-- 이전 화살표 시작 -->
 		<c:if test="${beginPage > 1}">
 			<a class="flex justify-center items-center"
-				href="list?boardId=${board.id }&boardPage=${beginPage-10}&${baseUri}">
+				href="list?boardPage=${beginPage-10}&${baseUri}">
 				<i class="fa-solid fa-caret-left text-2xl"></i> <span>이전 | </span>
 			</a>
 		</c:if>
@@ -70,8 +72,8 @@
 			<c:forEach var="i" begin="${beginPage }" end="${endPage }" step="1">
 				<c:if test="${i <= totalPage }">
 					<a
-						class="mx-2 hover:underline <c:if test="${i == boardPage }">text-2xl bg-gray-100 text-green-500</c:if>"
-						href="list?boardId=${board.id }&boardPage=${i}&${baseUri}">${i}</a>
+						class="mx-2 hover:underline ${i == boardPage ? 'text-2xl bg-gray-100 text-green-500' : ''}"
+						href="list?boardPage=${i}&${baseUri}">${i}</a>
 				</c:if>
 			</c:forEach>
 		</div>
@@ -79,7 +81,7 @@
 		<!-- 다음 화살표 시작 -->
 		<c:if test="${endPage < totalPage }">
 			<a class="flex justify-center items-center"
-				href="list?boardId=${board.id }&boardPage=${beginPage+10}&${baseUri}">
+				href="list?boardPage=${beginPage+10}&${baseUri}">
 				<span> | 다음</span> <i class="fa-solid fa-caret-right text-2xl"></i>
 			</a>
 		</c:if>
@@ -87,7 +89,7 @@
 		<!-- 페이지 끝으로 시작 -->
 		<c:if test="${beginPage + 10 < totalPage }">
 			<a class="text-[20px] mx-6"
-				href="list?boardId=${board.id }&boardPage=${totalPage}&${baseUri}">
+				href="list?boardPage=${totalPage}&${baseUri}">
 				<i class="fa-solid fa-forward flex items-center"></i>
 			</a>
 		</c:if>

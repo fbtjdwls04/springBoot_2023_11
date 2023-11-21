@@ -12,6 +12,8 @@ CREATE TABLE article(
     `body` TEXT NOT NULL
 );
 
+ALTER TABLE article ADD COLUMN hitCount INT UNSIGNED NOT NULL DEFAULT 0;
+
 TRUNCATE article;
 
 INSERT INTO article
@@ -19,16 +21,24 @@ SET memberId = 1,
 boardId = 1,
 regDate = NOW(),
 updateDate = NOW(),
-title = CONCAT('제목', CEIL(RAND()*10)),
-`body` = CONCAT('내용', CEIL(RAND()*10));
+title = CONCAT('제목', CEIL(RAND()*100)),
+`body` = CONCAT('내용', CEIL(RAND()*100));
 
 INSERT INTO article
 SET memberId = 2,
 boardId = 2,
 regDate = NOW(),
 updateDate = NOW(),
-title = CONCAT('제목', CEIL(RAND()*10)),
-`body` = CONCAT('내용', CEIL(RAND()*10));
+title = CONCAT('제목', CEIL(RAND()*100)),
+`body` = CONCAT('내용', CEIL(RAND()*100));
+
+INSERT INTO article
+SET memberId = 3,
+boardId = 2,
+regDate = NOW(),
+updateDate = NOW(),
+title = CONCAT('제목', CEIL(RAND()*100)),
+`body` = CONCAT('내용', CEIL(RAND()*100));
 
 
 SELECT * 
@@ -119,17 +129,29 @@ regDate = NOW(),
 updateDate = NOW();
 
 SELECT * FROM board;
+
 SELECT * 
 FROM article
 ORDER BY id DESC
 LIMIT 10,10;
 
 SELECT MAX(id) FROM article;
+SELECT * FROM article;
 
--- 게시글 늘리기
+SELECT a.*, m.name AS writerName
+FROM article AS a
+INNER JOIN MEMBER AS m
+ON a.memberId = m.id
+WHERE a.boardId = 2
+AND a.title LIKE '%제%'
+ORDER BY a.id DESC;
+
+
 INSERT INTO article
 (
     regDate, updateDate, memberId, boardId, title, `body`
 )
-SELECT NOW(), NOW(), memberId, boardId, title, `body`
+SELECT NOW(), NOW(), memberId, 2, title, `body`
 FROM article;
+
+

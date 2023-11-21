@@ -15,6 +15,7 @@ public class Article {
 	private String updateDate;
 	private String title;
 	private String body;
+	private String hitCount;
 	
 	private String writerName;
 }
