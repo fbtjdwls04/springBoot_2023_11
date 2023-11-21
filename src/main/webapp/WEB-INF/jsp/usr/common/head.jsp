@@ -13,6 +13,7 @@
 <!-- 폰트어썸 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 <link rel="stylesheet" href="/resource/common.css" />
+<script src="/resource/common.js" defer="defer"></script>
 <title>${pageTitle}</title>
 </head>
 <body>
@@ -22,8 +23,8 @@
 			<div class="grow"></div>
 			<ul class="flex text-2xl">
 				<li class="hover:underline"><a class="px-4" href="/">HOME</a></li>
-				<li class="hover:underline"><a class="px-4" href="/usr/article/list?boardId=1&boardPage=1">공지사항</a></li>
-				<li class="hover:underline"><a class="px-4" href="/usr/article/list?boardId=2&boardPage=1">자유게시판</a></li>
+				<li class="hover:underline"><a class="px-4" href="/usr/article/list?boardId=1">공지사항</a></li>
+				<li class="hover:underline"><a class="px-4" href="/usr/article/list?boardId=2">자유게시판</a></li>
 				<c:if test="${rq.getLoginedMemberId() == 0}">
 					<li class="hover:underline"><a class="px-4" href="/usr/member/login">LOGIN</a></li>
 					<li class="hover:underline"><a class="px-4" href="/usr/member/join">JOIN</a></li>
@@ -35,8 +36,6 @@
 		</div>
 	</header>
 	<div class="h-[100px]"></div>
-	<section class="container mx-auto mb-[25px]">
-		<div>
-			<h1 class="flex justify-center text-3xl">${pageTitle }</h1>
-		</div>
-	</section>
+	<div class="container mx-auto mb-[25px]">
+		<h1 class="flex justify-center text-3xl">${pageTitle }</h1>
+	</div>

@@ -7,7 +7,10 @@
 <%@ include file="../common/head.jsp"%>
 
 <section class="container mx-auto">
-	<p><c:if test="${searchType != null and searchType != ''}">${searchMsg } (으)로 검색된 </c:if>게시물 수 : ${articleCnt }</p>
+	<p>
+		<c:if test="${searchType != null and searchType != ''}">${searchMsg } (으)로 검색된 </c:if>
+		게시물 수 : ${articleCnt }
+	</p>
 	<table class="table text-[16px] text-center">
 		<thead>
 			<tr>
@@ -30,65 +33,92 @@
 			<!-- 게시물 리스트 끝 -->
 		</tbody>
 	</table>
-	
+
 	<c:if test="${articleCnt == 0}">
-		<p class="text-[16px] text-center mt-4">게시물이 없습니다.</p]>
+		<p class="text-[16px] text-center mt-4">
+			게시물이 없습니다.
+			</p]>
 	</c:if>
-	
+
 	<div class="flex justify-end">
 		<a class="px-2 hover:underline btn" href="write">글쓰기</a>
 	</div>
 
 	<!-- 페이지 리스트 시작 -->
 	<div class="flex justify-center items-center flex-wrap">
-		
+
+		<c:set var="baseUri"
+			value="searchType=${searchType}&searchMsg=${searchMsg}"></c:set>
+		<!-- 페이지 처음으로 시작 -->
 		<c:if test="${beginPage > 10}">
-			<a class="text-[20px] mx-6" href="list?boardId=${board.id }&boardPage=1&searchType=${searchType}&searchMsg=${searchMsg}"> 
-				<i class="fa-solid fa-backward flex items-center"></i>
+			<a class="text-[20px] mx-6"
+				href="list?boardId=${board.id }&boardPage=1&${baseUri}"> <i
+				class="fa-solid fa-backward flex items-center"></i>
 			</a>
 		</c:if>
-		
+		<!-- 페이지 처음으로 끝 -->
+		<!-- 이전 화살표 시작 -->
 		<c:if test="${beginPage > 1}">
-			<a class="flex justify-center items-center" href="list?boardId=${board.id }&boardPage=${beginPage-10}&searchType=${searchType}&searchMsg=${searchMsg}"> 
-				<i class="fa-solid fa-caret-left text-2xl"></i>
-				<span>이전 | </span>
+			<a class="flex justify-center items-center"
+				href="list?boardId=${board.id }&boardPage=${beginPage-10}&${baseUri}">
+				<i class="fa-solid fa-caret-left text-2xl"></i> <span>이전 | </span>
 			</a>
 		</c:if>
+		<!-- 이전 화살표 끝 -->
+		<!-- 페이지 번호 시작 -->
 		<div class="mx-4">
 			<c:forEach var="i" begin="${beginPage }" end="${endPage }" step="1">
 				<c:if test="${i <= totalPage }">
 					<a
-						class="mx-2 hover:underline <c:if test="${i == boardPage }">text-2xl bg-gray-200</c:if>"
-						href="list?boardId=${board.id }&boardPage=${i}&searchType=${searchType}&searchMsg=${searchMsg}">${i}</a>
+						class="mx-2 hover:underline <c:if test="${i == boardPage }">text-2xl bg-gray-100 text-green-500</c:if>"
+						href="list?boardId=${board.id }&boardPage=${i}&${baseUri}">${i}</a>
 				</c:if>
 			</c:forEach>
 		</div>
-
+		<!-- 페이지 번호 끝 -->
+		<!-- 다음 화살표 시작 -->
 		<c:if test="${endPage < totalPage }">
-			<a class="flex justify-center items-center" href="list?boardId=${board.id }&boardPage=${beginPage+10}&searchType=${searchType}&searchMsg=${searchMsg}">
-				<span> | 다음</span>
-				<i class="fa-solid fa-caret-right text-2xl"></i>
+			<a class="flex justify-center items-center"
+				href="list?boardId=${board.id }&boardPage=${beginPage+10}&${baseUri}">
+				<span> | 다음</span> <i class="fa-solid fa-caret-right text-2xl"></i>
 			</a>
 		</c:if>
-		
+		<!-- 다음 화살표 끝 -->
+		<!-- 페이지 끝으로 시작 -->
 		<c:if test="${beginPage + 10 < totalPage }">
-			<a class="text-[20px] mx-6" href="list?boardId=${board.id }&boardPage=${totalPage}&searchType=${searchType}&searchMsg=${searchMsg}">
+			<a class="text-[20px] mx-6"
+				href="list?boardId=${board.id }&boardPage=${totalPage}&${baseUri}">
 				<i class="fa-solid fa-forward flex items-center"></i>
 			</a>
 		</c:if>
+		<!-- 페이지 끝으로 끝 -->
 	</div>
 	<!-- 페이지 리스트 끝 -->
 	<!-- 검색창 시작-->
-	<form action="list">
+	<script>
+		function searchSubmit(e) {
+			if (e.searchMsg.value.trim().length == 0) {
+				alert('검색어를 입력해주세요');
+				e.searchMsg.focus();
+				return;
+			}
+
+			e.submit();
+		}
+	</script>
+
+	<form onsubmit="searchSubmit(this); return false;">
 		<div class="flex justify-center mt-4">
-			<input type="hidden" name="boardId" value="${board.id }"/>
-			<input type="hidden" name="boardPage" value="1"/>
-			<select class="max-w-xs border mr-4" name="searchType" >
-			  	<option value="title" <c:if test="${searchType == 'title' }">selected="selected"</c:if>>제목</option>
-			  	<option value="body" <c:if test="${searchType == 'body' }">selected="selected"</c:if>>내용</option>
-			  	<option value="writerName" <c:if test="${searchType == 'writerName' }">selected="selected"</c:if>>작성자</option>
-			</select>
-			<input class="input input-bordered w-full max-w-xs" type="text" name="searchMsg" value="${searchMsg }"/>
+			<input name="boardId" type="hidden" value="${board.id }" /> 
+			<input name="boardPage" type="hidden" value="1" /> 
+				<select name="searchType" data-value="${searchType}" class="px-2 max-w-xs border mr-4">
+				<option value="title">제목</option>
+				<option value="body">내용</option>
+				<option value="titleOrBody">제목 + 내용</option>
+				<option value="writerName">작성자</option>
+			</select> 
+			<input name="searchMsg" class="input input-bordered w-full max-w-xs"
+				type="text" value="${searchMsg }" placeholder="검색어를 입력해주세요" />
 			<button class="btn ml-2">검색</button>
 		</div>
 	</form>

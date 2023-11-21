@@ -125,3 +125,11 @@ ORDER BY id DESC
 LIMIT 10,10;
 
 SELECT MAX(id) FROM article;
+
+-- 게시글 늘리기
+INSERT INTO article
+(
+    regDate, updateDate, memberId, boardId, title, `body`
+)
+SELECT NOW(), NOW(), memberId, boardId, title, `body`
+FROM article;

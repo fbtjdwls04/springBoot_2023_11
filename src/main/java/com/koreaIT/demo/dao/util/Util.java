@@ -57,4 +57,10 @@ public class Util {
 	public static int getEndPage(int boardPage) {
 		return boardPage%10 == 0 ? boardPage : getBeginPage(boardPage) + 9;
 	}
+
+	public static String cleanText(String text) {
+		return text.replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;");
+	}
 }

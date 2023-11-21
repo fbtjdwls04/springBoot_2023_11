@@ -35,14 +35,20 @@ public interface ArticleDao {
 			 	<if test='searchType == "body"'>
 			 		AND a.body LIKE CONCAT('%',#{searchMsg},'%')
 			 	</if>
-			 	<if test='searchType == "writerName"'>
+			 	<if test='searchType == "titleOrBody"'>
+			 		AND (
+				 		a.title LIKE CONCAT('%',#{searchMsg},'%')
+				 		OR a.body LIKE CONCAT('%',#{searchMsg},'%')
+			 		)
+		 		</if>
+		 		<if test='searchType == "writerName"'>
 			 		AND m.name LIKE CONCAT('%',#{searchMsg},'%')
 		 		</if>
 				ORDER BY a.id DESC
-			 	LIMIT #{boardPage},10
+			 	LIMIT #{startLimit},10
 			</script>
 			""")
-	public List<Article> getArticles(int boardId, int boardPage, String searchType, String searchMsg);
+	public List<Article> getArticles(int boardId, int startLimit, String searchType, String searchMsg);
 	
 	@Select("""
 			<script>
@@ -57,6 +63,12 @@ public interface ArticleDao {
 			 	<if test='searchType == "body"'>
 			 		AND a.body LIKE CONCAT('%',#{searchMsg},'%')
 			 	</if>
+			 	<if test='searchType == "titleOrBody"'>
+			 		AND (
+				 		a.title LIKE CONCAT('%',#{searchMsg},'%')
+				 		OR a.body LIKE CONCAT('%',#{searchMsg},'%')
+			 		)
+		 		</if>
 			 	<if test='searchType == "writerName"'>
 			 		AND m.name LIKE CONCAT('%',#{searchMsg},'%')
 		 		</if>

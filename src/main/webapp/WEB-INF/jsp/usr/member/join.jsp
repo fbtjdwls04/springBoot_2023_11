@@ -82,11 +82,12 @@
 				</tr>
 				<tr>
 					<td colspan="2" class="p-0">
-						<button class="hover:bg-gray-200 w-full text-center py-4">가입완료</button>
+						<button class="hover:bg-gray-200 w-full text-center p-4">가입완료</button>
 					</td>
 				</tr>
 			</table>
 			
 		</form>
 	</section>
+	
 	<%@ include file="../common/foot.jsp" %>
