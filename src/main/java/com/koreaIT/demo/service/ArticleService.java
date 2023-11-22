@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.koreaIT.demo.dao.ArticleDao;
-import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.vo.Article;
-import com.koreaIT.demo.vo.ResultData;
 
 @Service
 public class ArticleService {
@@ -50,15 +48,8 @@ public class ArticleService {
 		return articleDao.forPrintArticle(id);
 	}
 
-	public ResultData<Integer> increaseHitCount(int id) {
-		
-		int affectedRowsCnt = articleDao.increaseHitCount(id);
-		
-		if (affectedRowsCnt == 0) {
-			return ResultData.from("F-1", Util.f("%d번 게시물은 존재하지 않습니다", id), affectedRowsCnt);
-		}
-		
-		return ResultData.from("S-1", "조회수 증가", affectedRowsCnt);
+	public void increaseHitCount(int id) {
+		articleDao.increaseHitCount(id);
 	}
 
 	

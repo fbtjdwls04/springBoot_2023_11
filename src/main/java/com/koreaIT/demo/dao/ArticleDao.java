@@ -128,7 +128,7 @@ public interface ArticleDao {
 					SET hitCount = hitCount + 1 
 					WHERE id = #{id}
 			""")
-	public int increaseHitCount(int id);
+	public void increaseHitCount(int id);
 
 	
 	@Select("""

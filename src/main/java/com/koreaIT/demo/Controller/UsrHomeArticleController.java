@@ -13,8 +13,11 @@ import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.service.BoardService;
 import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.Board;
-import com.koreaIT.demo.vo.ResultData;
 import com.koreaIT.demo.vo.Rq;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class UsrHomeArticleController {
@@ -98,28 +101,46 @@ public class UsrHomeArticleController {
 	}
 
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(Model model, int id) {
+	public String showDetail(HttpServletRequest req, HttpServletResponse res,Model model, int id) {
 		
 		Article article = articleService.forPrintArticle(id);
+		
+		if(article == null) {
+			return rq.jsReturnOnView("존재하지 않는 게시글입니다");
+		}
+		
+		Cookie oldCookie = null;
+		Cookie[] cookies = req.getCookies();
+		
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+				if(cookie.getName().equals("hitCount")) {
+					oldCookie = cookie;
+				}
+			}
+		}
+		
+		if(oldCookie != null) {
+			if(oldCookie.getValue().contains("[" + id + "]") == false) {
+				articleService.increaseHitCount(id);
+				oldCookie.setValue(oldCookie.getValue() + "_[" + id +"]");
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(5);
+				res.addCookie(oldCookie);
+			}
+		}else {
+			articleService.increaseHitCount(id);
+			Cookie newCookie = new Cookie("hitCount", "[" + id + "]");
+			newCookie.setPath("/");
+			newCookie.setMaxAge(5);
+			res.addCookie(newCookie);
+		}
 		
 		model.addAttribute("article", article);
 		model.addAttribute("loginedMemberId", rq.getLoginedMemberId());
 
 		return "usr/article/detail";
 		
-	}
-	
-	@RequestMapping("/usr/article/doIncreaseHitCount")
-	@ResponseBody
-	public ResultData<Integer> doIncreaseHitCount(int id) {
-		
-		ResultData<Integer> increaseHitCountRd = articleService.increaseHitCount(id);
-		
-		if (increaseHitCountRd.isFail()) {
-			return increaseHitCountRd;
-		}
-		
-		return ResultData.from(increaseHitCountRd.getResultCode(), increaseHitCountRd.getMsg(), articleService.getArticleHitCount(id));
 	}
 
 	@RequestMapping("/usr/article/modify")
