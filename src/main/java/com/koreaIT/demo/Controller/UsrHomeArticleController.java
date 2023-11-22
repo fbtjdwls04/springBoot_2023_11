@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.service.BoardService;
+import com.koreaIT.demo.service.RecommendPointService;
 import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.Board;
+import com.koreaIT.demo.vo.RecommendPoint;
+import com.koreaIT.demo.vo.ResultData;
 import com.koreaIT.demo.vo.Rq;
 
 import jakarta.servlet.http.Cookie;
@@ -24,11 +27,13 @@ public class UsrHomeArticleController {
 
 	private ArticleService articleService;
 	private BoardService boardService;
+	private RecommendPointService recommendPointService ;
 	private Rq rq;
 
-	public UsrHomeArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
+	public UsrHomeArticleController(ArticleService articleService, BoardService boardService,RecommendPointService recommendPointService, Rq rq) {
 		this.articleService = articleService;
 		this.boardService = boardService;
+		this.recommendPointService = recommendPointService;
 		this.rq = rq;
 	}
 
@@ -103,12 +108,6 @@ public class UsrHomeArticleController {
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(HttpServletRequest req, HttpServletResponse res,Model model, int id) {
 		
-		Article article = articleService.forPrintArticle(id);
-		
-		if(article == null) {
-			return rq.jsReturnOnView("존재하지 않는 게시글입니다");
-		}
-		
 		Cookie oldCookie = null;
 		Cookie[] cookies = req.getCookies();
 		
@@ -136,11 +135,26 @@ public class UsrHomeArticleController {
 			res.addCookie(newCookie);
 		}
 		
+		Article article = articleService.forPrintArticle(id);
+		
+		if(article == null) {
+			return rq.jsReturnOnView("존재하지 않는 게시글입니다");
+		}
+		
+		int checked;
+		
+		RecommendPoint recommend = recommendPointService.getRecommendByMemberId(id,rq.getLoginedMemberId());
+		
+		if(recommend == null) {
+			checked = 0;
+		}else {
+			checked = recommend.getPoint();
+		}
+		
 		model.addAttribute("article", article);
 		model.addAttribute("loginedMemberId", rq.getLoginedMemberId());
-
+		model.addAttribute("checked",checked);
 		return "usr/article/detail";
-		
 	}
 
 	@RequestMapping("/usr/article/modify")
@@ -201,6 +215,21 @@ public class UsrHomeArticleController {
 		articleService.deleteArticle(id);
 
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제하였습니다", id), Util.f("list?boardId=%d&boardPage=1", boardId));
+	}
+	
+	@RequestMapping("/usr/article/doIncreaseRecommend")
+	@ResponseBody
+	public ResultData<Integer> doIncreaseRecommend(int id, int memberId) {
+		RecommendPoint recommend = recommendPointService.getRecommendByMemberId(id,memberId);
+		
+		if(recommend == null) {
+			recommendPointService.addRecommend(id, memberId);
+			return ResultData.from("S-1","좋아요",articleService.forPrintArticle(id).getPoint());
+		}
+		
+		recommendPointService.updateRecommend(id, memberId, recommend.getPoint());
+		
+		return ResultData.from("S-2","좋아요 업데이트",articleService.forPrintArticle(id).getPoint());
 	}
 
 }

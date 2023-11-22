@@ -11,14 +11,14 @@ public class ResultData<DT> {
 	@Getter
 	private DT data;
 	
-	public static <DT> ResultData<DT> from(String resultCold, String msg) {
-		return from(resultCold, msg, null);
+	public static <DT> ResultData<DT> from(String resultCode, String msg) {
+		return from(resultCode, msg, null);
 	}
 	
-	public static <DT> ResultData<DT> from(String resultCold, String msg, DT data) {
+	public static <DT> ResultData<DT> from(String resultCode, String msg, DT data) {
 		
 		ResultData<DT> rd = new ResultData<>();
-		rd.resultCode = resultCold;
+		rd.resultCode = resultCode;
 		rd.msg = msg;
 		rd.data = data;
 		

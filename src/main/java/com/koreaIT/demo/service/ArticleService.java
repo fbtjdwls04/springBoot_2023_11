@@ -61,5 +61,4 @@ public class ArticleService {
 		return articleDao.getArticleHitCount(id);
 	}
 
-
 }

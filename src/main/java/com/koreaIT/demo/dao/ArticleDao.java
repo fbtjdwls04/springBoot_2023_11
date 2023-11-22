@@ -25,26 +25,32 @@ public interface ArticleDao {
 	
 	@Select("""
 			<script>
-			SELECT a.*, m.name AS writerName
+			SELECT a.*
+					, m.name AS writerName
+					, IFNULL(SUM(r.point), 0) AS `point`
 				FROM article AS a
 			 	INNER JOIN member AS m
 			 	ON a.memberId = m.id
+			 	LEFT JOIN recommendPoint AS r
+				ON r.relTypeCode = 'article'
+				AND a.id = r.relId
 			 	WHERE a.boardId = #{boardId}
-			 	<if test='searchType == "title"'>
-			 		AND a.title LIKE CONCAT('%',#{searchMsg},'%')
-			 	</if>
-			 	<if test='searchType == "body"'>
-			 		AND a.body LIKE CONCAT('%',#{searchMsg},'%')
-			 	</if>
-			 	<if test='searchType == "titleOrBody"'>
-			 		AND (
-				 		a.title LIKE CONCAT('%',#{searchMsg},'%')
-				 		OR a.body LIKE CONCAT('%',#{searchMsg},'%')
-			 		)
-		 		</if>
-		 		<if test='searchType == "writerName"'>
-			 		AND m.name LIKE CONCAT('%',#{searchMsg},'%')
-		 		</if>
+				 	<if test='searchType == "title"'>
+				 		AND a.title LIKE CONCAT('%',#{searchMsg},'%')
+				 	</if>
+				 	<if test='searchType == "body"'>
+				 		AND a.body LIKE CONCAT('%',#{searchMsg},'%')
+				 	</if>
+				 	<if test='searchType == "titleOrBody"'>
+				 		AND (
+					 		a.title LIKE CONCAT('%',#{searchMsg},'%')
+					 		OR a.body LIKE CONCAT('%',#{searchMsg},'%')
+				 		)
+			 		</if>
+			 		<if test='searchType == "writerName"'>
+				 		AND m.name LIKE CONCAT('%',#{searchMsg},'%')
+			 		</if>
+				GROUP BY a.id
 				ORDER BY a.id DESC
 			 	LIMIT #{startLimit},#{itemsInAPage}
 			</script>
@@ -85,11 +91,17 @@ public interface ArticleDao {
 	public Article getArticleById(int id);
 	
 	@Select("""
-			SELECT a.*, m.name AS writerName
+			SELECT a.*
+			        , m.name AS writerName
+			        , IFNULL(SUM(r.point), 0) AS `point`
 				FROM article AS a
-			 	INNER JOIN member AS m
-			 	ON a.memberId = m.id
-				WHERE a.id = #{id}
+				INNER JOIN MEMBER AS m
+				ON a.memberId = m.id
+				LEFT JOIN recommendPoint AS r
+				ON r.relTypeCode = 'article'
+				AND a.id = r.relId
+				WHERE a.id = #{id} 
+				GROUP BY a.id
 			""")
 	public Article forPrintArticle(int id);
 	

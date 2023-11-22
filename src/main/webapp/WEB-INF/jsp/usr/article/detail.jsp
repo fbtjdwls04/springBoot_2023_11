@@ -6,6 +6,34 @@
 	
 	<%@ include file="../common/head.jsp" %>
   	
+  	<script>
+  		let checkNum = ${checked};
+  	
+  		function increaseRecommend() {
+			$.ajax({
+				url: "doIncreaseRecommend",
+				method: "get",
+				data: {"id": ${article.id}, "memberId": ${rq.getLoginedMemberId()}},
+				dataType: "json",
+				success: function(data) {
+					$("#increaseRecommend").html(data.data);
+				},
+				error: function(xhr, status, error) {
+					console.error("ERROR : " + status + " - " + error);
+				}
+			})
+			if(checkNum == 0){
+				$('.fa-heart').removeClass('fa-regular');
+				$('.fa-heart').addClass('fa-solid text-[red]');
+				checkNum = 1;				
+			}else{
+				$('.fa-heart').removeClass('fa-solid text-[red]');
+				$('.fa-heart').addClass('fa-regular');
+				checkNum = 0;	
+			}
+		}
+  	</script>
+  	
 	<section class="flex justify-center ">
 		<div class="container">
 			<table class="table">
@@ -28,6 +56,23 @@
 				<tr>
 					<th>작성자</th>
 					<td>${article.writerName}</td>
+				</tr>
+				<tr>
+					<th>추천</th>
+					<td>
+						<c:if test="${rq.getLoginedMemberId() != 0 }">
+							<button onclick="increaseRecommend();">
+								<c:if test="${checked == 0 }">
+									<i class="fa-heart fa-regular"></i>
+								</c:if>
+								<c:if test="${checked == 1 }">
+									<i class="fa-heart fa-solid text-[red]"></i>
+								</c:if>
+							</button>
+						</c:if>
+							<span>좋아요 : </span>
+							<span id="increaseRecommend">${article.point}</span>
+					</td>
 				</tr>
 				<tr>
 					<th>제목</th>

@@ -19,6 +19,7 @@
 				<th width="150">작성자</th>
 				<th width="200">작성일</th>
 				<th width="100">조회수</th>
+				<th width="40">추천수</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -30,6 +31,7 @@
 					<td>${article.writerName}</td>
 					<td>${article.regDate.substring(2,16)}</td>
 					<td>${article.hitCount}</td>
+					<td>${article.point}</td>
 				</tr>
 			</c:forEach>
 			<!-- 게시물 리스트 끝 -->

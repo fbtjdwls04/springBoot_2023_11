@@ -17,5 +17,9 @@ public class Article {
 	private String body;
 	private String hitCount;
 	
+//	member join
 	private String writerName;
+	
+//	recommendPoint join
+	private int point; 
 }
