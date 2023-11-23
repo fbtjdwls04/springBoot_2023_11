@@ -55,29 +55,10 @@
 				})
 			}
 		
-		function replySubmit(e) {
-			const body = e.body;
-			
-			if(body.value.trim().length == 0){
-				alert('내용을 입력해주세요');
-				body.focus();
-			}
-			
-			e.submit();
-		}
 	</script>
   	
 	<section class="flex justify-center ">
 		<div class="container">
-			<!-- 수정 삭제버튼 시작 -->
-			<div class="flex mt-[20px]">
-				<div class="flex-grow"></div>
-				<c:if test="${loginedMemberId == article.memberId }">
-					<button class="btn btn-success mr-4"><a href="modify?id=${article.id }">수정</a></button>
-					<button class="btn btn-error" onclick="if(confirm('${article.id }번 글을 삭제하시겠습니까?')) location.replace('doDelete?id=${article.id}');">삭제</button>
-				</c:if>
-			</div>
-			<!-- 수정 삭제버튼 끝 -->
 			<!-- 게시물 -->
 			<table class="table">
 				<tr>
@@ -119,18 +100,40 @@
 				</tr>
 			</table>
 			<hr />
+			<!-- 수정 삭제버튼 시작 -->
+			<div class="flex mt-[20px]">
+				<button class="btn btn-outline btn-s" onclick="history.back()">뒤로가기</button>
+				<c:if test="${loginedMemberId == article.memberId }">
+					<button class="btn btn-outline btn-s ml-2"><a href="modify?id=${article.id }">수정</a></button>
+					<button class="btn btn-outline btn-s ml-2" onclick="if(confirm('${article.id }번 글을 삭제하시겠습니까?')) location.replace('doDelete?id=${article.id}');">삭제</button>
+				</c:if>
+			</div>
+			<!-- 수정 삭제버튼 끝 -->
 		</div>
 	</section>
 	
+	<script>
+		function replySubmit(e) {
+			const body = e.body;
+			
+			if(body.value.trim().length == 0){
+				alert('내용을 입력해주세요');
+				body.focus();
+			}
+			
+			e.submit();
+		}
+	</script>
 	<!-- 댓글 -->
-	<section class="flex justify-center mt-4">
+	<section class="flex justify-center my-4">
 		<div class="container">
-			<h2 class="text-[20px] p-4">댓글 ${replys.size() }</h2>
-			<div class=" border-2 p-10 rounded-[10px]">
+			<h2 class="text-[20px] p-4">댓글 ${replies.size() }</h2>
+			<div class=" border p-10 rounded-[10px]">
 				<!-- 댓글 입력창 -->
 				<form action="/usr/reply/doWrite" onsubmit="replySubmit(this); return false;">
 					<input name="relId" value="${article.id }" type="hidden" />
 					<input name="relTypeCode" value="article" type="hidden" />
+					<div class="font-semibold ml-2 mb-2">${loginedMemberName}</div>
 					<div class="flex">
 						<textarea name="body" rows="1" class="textarea textarea-bordered w-full" placeholder="댓글을 입력해주세요"></textarea>
 						<button class="btn">작성</button>
@@ -138,22 +141,18 @@
 				</form>
 				
 				<!-- 댓글 리스트 -->
-				<table class="table">
-					<tr>
-						<th class="min-w-[100px]"><span>닉네임</span></th>
-						<td>내용</td>
-						<td width="200">작성일</td>
-						<td width="200">수정일</td>
-					</tr>
-					<c:forEach var="reply" items="${replys }">
-						<tr>
-							<th>${reply.writerName }</th>
-							<td class="whitespace-pre-wrap">${reply.body}</td>
-							<td>${reply.regDate}</td>
-							<td>${reply.updateDate}</td>
-						</tr>
+				<div class="mt-8">
+					<c:forEach var="reply" items="${replies }">
+						<div class="flex mt-4 border-b-2">
+							<div class="w-[50px]"></div>
+							<div>
+								<div class="font-semibold">${reply.writerName }</div>
+								<div class="whitespace-pre-wrap ml-2">${reply.body}</div>
+								<div class="ml-2">${reply.updateDate}</div>
+							</div>
+						</div>
 					</c:forEach>
-				</table>
+				</div>
 			</div>
 		</div>
 	</section>

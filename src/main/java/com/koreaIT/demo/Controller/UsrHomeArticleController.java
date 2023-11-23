@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.ArticleService;
 import com.koreaIT.demo.service.BoardService;
-import com.koreaIT.demo.service.RecommendPointService;
+import com.koreaIT.demo.service.MemberService;
 import com.koreaIT.demo.service.ReplyService;
 import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.Board;
+import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.Reply;
 import com.koreaIT.demo.vo.Rq;
 
@@ -26,15 +27,15 @@ import jakarta.servlet.http.HttpServletResponse;
 public class UsrHomeArticleController {
 
 	private ArticleService articleService;
+	private MemberService memberService; 
 	private BoardService boardService;
-	private RecommendPointService recommendPointService ;
 	private ReplyService replyService;
 	private Rq rq;
 
-	public UsrHomeArticleController(ArticleService articleService, BoardService boardService,RecommendPointService recommendPointService,ReplyService replyService, Rq rq) {
+	public UsrHomeArticleController(ArticleService articleService, BoardService boardService,ReplyService replyService,MemberService memberService, Rq rq) {
 		this.articleService = articleService;
+		this.memberService = memberService;
 		this.boardService = boardService;
-		this.recommendPointService = recommendPointService;
 		this.replyService = replyService;
 		this.rq = rq;
 	}
@@ -111,7 +112,7 @@ public class UsrHomeArticleController {
 	}
 
 	@RequestMapping("/usr/article/detail")
-	public String showDetail(HttpServletRequest req, HttpServletResponse res,Model model, int id,@RequestParam(defaultValue = "article") String relTypeCode) {
+	public String showDetail(HttpServletRequest req, HttpServletResponse res,Model model, int id) {
 		
 		Cookie oldCookie = null;
 		Cookie[] cookies = req.getCookies();
@@ -146,11 +147,13 @@ public class UsrHomeArticleController {
 			return rq.jsReturnOnView("존재하지 않는 게시글입니다");
 		}
 		
-		List<Reply> replys = replyService.getReplys(id, relTypeCode);
+		Member member = memberService.getMemberById(rq.getLoginedMemberId());
+		List<Reply> replies = replyService.getReplies(id, "article");
 		
 		model.addAttribute("article", article);
 		model.addAttribute("loginedMemberId", rq.getLoginedMemberId());
-		model.addAttribute("replys", replys);
+		model.addAttribute("replies", replies);
+		model.addAttribute("loginedMemberName", member.getName());
 		
 		return "usr/article/detail";
 	}

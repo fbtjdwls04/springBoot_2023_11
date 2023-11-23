@@ -31,6 +31,6 @@ public interface ReplyDao {
 				WHERE r.relId = #{id}
 				AND r.relTypeCode = #{relTypeCode}
 			""")
-	public List<Reply> getReplys(int id, String relTypeCode);
+	public List<Reply> getReplies(int id, String relTypeCode);
 	
 }

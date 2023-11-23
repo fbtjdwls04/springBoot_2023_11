@@ -27,7 +27,14 @@
 			<c:forEach var="article" items="${articles}">
 				<tr>
 					<td>${article.id}</td>
-					<td class="hover:underline"><a href="detail?id=${article.id}">${article.title}</a></td>
+					<td class="hover:underline">
+						<a href="detail?id=${article.id}">
+							${article.title}
+							<c:if test="${article.replyCnt > 0 }">
+								<span class="text-[red]">[${article.replyCnt }]</span>
+							</c:if>
+						</a>
+					</td>
 					<td>${article.writerName}</td>
 					<td>${article.regDate.substring(2,16)}</td>
 					<td>${article.hitCount}</td>

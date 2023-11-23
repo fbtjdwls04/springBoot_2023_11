@@ -21,5 +21,7 @@ public class Article {
 	private String writerName;
 	
 //	recommendPoint join
-	private int point; 
+	private int point;
+	
+	private int replyCnt; 
 }

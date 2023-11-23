@@ -16,5 +16,6 @@ public class Reply {
 	private String relTypeCode;
 	private int relId;
 	
+//	member inner join
 	private String writerName;
 }

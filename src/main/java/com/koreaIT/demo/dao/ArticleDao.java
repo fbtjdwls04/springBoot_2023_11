@@ -28,12 +28,15 @@ public interface ArticleDao {
 			SELECT a.*
 					, m.name AS writerName
 					, IFNULL(SUM(r.point), 0) AS `point`
+					,(SELECT COUNT(*) FROM reply WHERE relId = a.id) AS replyCnt
 				FROM article AS a
 			 	INNER JOIN member AS m
 			 	ON a.memberId = m.id
 			 	LEFT JOIN recommendPoint AS r
 				ON r.relTypeCode = 'article'
 				AND a.id = r.relId
+				LEFT JOIN reply AS rp
+				ON rp.relId = a.id
 			 	WHERE a.boardId = #{boardId}
 				 	<if test='searchType == "title"'>
 				 		AND a.title LIKE CONCAT('%',#{searchMsg},'%')

@@ -37,5 +37,12 @@ public interface MemberDao {
 				AND loginPw = #{loginPw}
 			""")
 	public Member doLogin(String loginId, String loginPw);
+
+	@Select("""
+			SELECT * 
+				FROM `member`
+				WHERE id = #{loginedMemberId}
+			""")
+	public Member getMemberById(int loginedMemberId);
 	
 }

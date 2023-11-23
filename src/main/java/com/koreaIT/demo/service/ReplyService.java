@@ -20,7 +20,7 @@ public class ReplyService {
 		replyDao.doWrite(relId, relTypeCode,memberId, body);
 	}
 
-	public List<Reply> getReplys(int id, String relTypeCode) {
-		return replyDao.getReplys(id, relTypeCode);
+	public List<Reply> getReplies(int id, String relTypeCode) {
+		return replyDao.getReplies(id, relTypeCode);
 	}
 }
