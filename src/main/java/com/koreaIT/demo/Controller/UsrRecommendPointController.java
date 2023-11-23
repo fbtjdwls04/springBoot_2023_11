@@ -25,22 +25,16 @@ public class UsrRecommendPointController {
 		return recommendPointService.getRecommendPoint(rq.getLoginedMemberId(), relTypeCode, relId);
 	}
 
-	@RequestMapping("/usr/recommendPoint/insertRecommendPoint")
+	@RequestMapping("/usr/recommendPoint/doRecommendPoint")
 	@ResponseBody
-	public String insertRecommendPoint(String relTypeCode, int relId) {
-
+	public String doRecommendPoint(String relTypeCode, int relId, boolean recommendBtn) {
+		
+		if(recommendBtn) {
+			recommendPointService.deleteRecommendPoint(rq.getLoginedMemberId(),relTypeCode, relId);
+			return "좋아요 취소";
+		}
+		
 		recommendPointService.insertRecommendPoint(rq.getLoginedMemberId(),relTypeCode, relId);
-
 		return "좋아요 성공";
 	}
-
-	@RequestMapping("/usr/recommendPoint/deleteRecommendPoint")
-	@ResponseBody
-	public String deleteRecommendPoint(String relTypeCode, int relId) {
-
-		recommendPointService.deleteRecommendPoint(rq.getLoginedMemberId(),relTypeCode, relId);
-
-		return "좋아요 취소";
-	}
-	
 }
