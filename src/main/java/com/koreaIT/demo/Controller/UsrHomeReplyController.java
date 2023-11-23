@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.ReplyService;
+import com.koreaIT.demo.vo.Reply;
 import com.koreaIT.demo.vo.Rq;
 
 @Controller
@@ -32,5 +33,24 @@ public class UsrHomeReplyController {
 		replyService.doWrite(relId, relTypeCode,rq.getLoginedMemberId() ,body);
 		
 		return Util.jsReplace("댓글이 작성되었습니다", Util.f("/usr/article/detail?id=%d", relId));
+	}
+	
+	@RequestMapping("/usr/reply/doDelete")
+	@ResponseBody
+	public String doDelete(int id, int relId) {
+
+		Reply reply =  replyService.getReplyById(id);
+
+		if (reply == null) {
+			return Util.jsHistoryBack("해당 댓글은 존재하지 않습니다");
+		}
+
+		if (rq.getLoginedMemberId() != reply.getMemberId()) {
+			return Util.jsHistoryBack("권한이 없습니다.");
+		}
+		
+		replyService.deleteReply(id);
+		
+		return Util.jsReplace("댓글을 삭제하였습니다", Util.f("/usr/article/detail?id=%d", relId));
 	}
 }

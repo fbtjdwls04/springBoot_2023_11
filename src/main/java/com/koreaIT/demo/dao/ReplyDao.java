@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.koreaIT.demo.vo.Reply;
 
@@ -24,7 +25,7 @@ public interface ReplyDao {
 
 	
 	@Select("""
-			SELECT m.name AS writerName, r.*
+			SELECT m.nickname AS writerName, r.*
 				FROM reply AS r
 				INNER JOIN member AS m
 				ON r.memberId = m.id
@@ -32,5 +33,18 @@ public interface ReplyDao {
 				AND r.relTypeCode = #{relTypeCode}
 			""")
 	public List<Reply> getReplies(int id, String relTypeCode);
+
+	@Select("""
+			SELECT *
+				FROM reply
+				WHERE id = #{id}
+			""")
+	public Reply getReplyById(int id);
+
+	@Update("""
+			DELETE FROM reply
+				WHERE id = #{id}
+			""")
+	public void deleteReply(int id);
 	
 }

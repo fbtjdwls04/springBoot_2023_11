@@ -130,15 +130,20 @@
 			<h2 class="text-[20px] p-4">댓글 ${replies.size() }</h2>
 			<div class=" border p-10 rounded-[10px]">
 				<!-- 댓글 입력창 -->
-				<form action="/usr/reply/doWrite" onsubmit="replySubmit(this); return false;">
-					<input name="relId" value="${article.id }" type="hidden" />
-					<input name="relTypeCode" value="article" type="hidden" />
-					<div class="font-semibold ml-2 mb-2">${loginedMemberName}</div>
-					<div class="flex">
-						<textarea name="body" rows="1" class="textarea textarea-bordered w-full" placeholder="댓글을 입력해주세요"></textarea>
-						<button class="btn">작성</button>
-					</div>
-				</form>
+				<c:if test="${rq.getLoginedMemberId() != 0 }">
+					<form action="/usr/reply/doWrite" onsubmit="replySubmit(this); return false;">
+						<input name="relId" value="${article.id }" type="hidden" />
+						<input name="relTypeCode" value="article" type="hidden" />
+						<div class="font-semibold ml-2 mb-2">${loginedMemberName}</div>
+						<div class="flex">
+							<textarea name="body" rows="1" class="textarea textarea-bordered w-full" placeholder="댓글을 입력해주세요"></textarea>
+							<button class="btn">작성</button>
+						</div>
+					</form>
+				</c:if>
+				<c:if test="${rq.getLoginedMemberId() == 0 }">
+					<span>댓글은 로그인 후 이용이 가능합니다</span>
+				</c:if>
 				
 				<!-- 댓글 리스트 -->
 				<div class="mt-8">
@@ -148,7 +153,12 @@
 							<div>
 								<div class="font-semibold">${reply.writerName }</div>
 								<div class="whitespace-pre-wrap ml-2">${reply.body}</div>
-								<div class="ml-2">${reply.updateDate}</div>
+								<div class="ml-2">
+									<span>${reply.updateDate}</span>
+									<c:if test="${reply.memberId == rq.getLoginedMemberId() }">
+										<a class="btn btn-xs" href="/usr/reply/doDelete?id=${reply.id }&relId=${article.id}">삭제</a>
+									</c:if>
+								</div>
 							</div>
 						</div>
 					</c:forEach>

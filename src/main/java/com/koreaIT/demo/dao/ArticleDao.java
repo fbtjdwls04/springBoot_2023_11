@@ -26,7 +26,7 @@ public interface ArticleDao {
 	@Select("""
 			<script>
 			SELECT a.*
-					, m.name AS writerName
+					, m.nickname AS writerName
 					, IFNULL(SUM(r.point), 0) AS `point`
 					,(SELECT COUNT(*) FROM reply WHERE relId = a.id) AS replyCnt
 				FROM article AS a
@@ -95,7 +95,7 @@ public interface ArticleDao {
 	
 	@Select("""
 			SELECT a.*
-			        , m.name AS writerName
+			        , m.nickname AS writerName
 			        , IFNULL(SUM(r.point), 0) AS `point`
 				FROM article AS a
 				INNER JOIN MEMBER AS m
