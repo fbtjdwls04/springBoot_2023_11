@@ -54,7 +54,7 @@ public class Rq {
 	}
 
 	public void logout() {
-		this.session.setAttribute("loginedMemberId", 0);
+		this.session.removeAttribute("loginedMemberId");
 	}
 
 	public String jsReturnOnView(String msg) {

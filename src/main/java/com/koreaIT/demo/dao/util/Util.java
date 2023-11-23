@@ -50,12 +50,12 @@ public class Util {
 				""", msg, uri);
 	}
 
-	public static int getBeginPage(int boardPage) {
-		return boardPage%10 == 0 ? boardPage - 9 : boardPage - boardPage%10 + 1;
+	public static int getBeginPage(int boardPage, int pageSize ) {
+		return boardPage % pageSize == 0 ? boardPage - pageSize + 1 : boardPage - boardPage % pageSize + 1;
 	}
 
-	public static int getEndPage(int boardPage) {
-		return boardPage%10 == 0 ? boardPage : getBeginPage(boardPage) + 9;
+	public static int getEndPage(int boardPage, int pageSize) {
+		return boardPage % pageSize == 0 ? boardPage : getBeginPage(boardPage, pageSize) + pageSize - 1;
 	}
 
 	public static String cleanText(String text) {

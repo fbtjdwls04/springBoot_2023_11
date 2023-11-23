@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.koreaIT.demo.dao.RecommendPointDao;
 import com.koreaIT.demo.vo.RecommendPoint;
+import com.koreaIT.demo.vo.ResultData;
 
 @Service
 public class RecommendPointService {
@@ -14,15 +15,22 @@ public class RecommendPointService {
 		this.recommendPointDao = recommendPointDao;
 	}
 
-	public void addRecommend(int id,int memberId) {
-		recommendPointDao.addRecommend(id, memberId);
-	}
-	
-	public RecommendPoint getRecommendByMemberId(int id, int memberId) {
-		return recommendPointDao.getRecommendByMemberId(id, memberId);
+	public ResultData<RecommendPoint> getRecommendPoint(int loginedMemberId, String relTypeCode, int relId) {
+
+		RecommendPoint recommendPoint = recommendPointDao.getRecommendPoint(loginedMemberId, relTypeCode, relId);
+
+		if (recommendPoint == null) {
+			return ResultData.from("F-1", "좋아요 기록 없음");
+		}
+
+		return ResultData.from("S-1", "좋아요 기록 있음", recommendPoint);
 	}
 
-	public void updateRecommend(int id, int memberId, int point) {
-		recommendPointDao.updateRecommend(id, memberId, point);
+	public void insertRecommendPoint(int loginedMemberId, String relTypeCode, int relId) {
+		recommendPointDao.insertRecommendPoint(loginedMemberId, relTypeCode, relId);
+	}
+
+	public void deleteRecommendPoint(int loginedMemberId, String relTypeCode, int relId) {
+		recommendPointDao.deleteRecommendPoint(loginedMemberId, relTypeCode, relId);
 	}
 }

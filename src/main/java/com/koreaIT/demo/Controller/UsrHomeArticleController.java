@@ -79,16 +79,18 @@ public class UsrHomeArticleController {
 
 		Board board = boardService.getBoardById(boardId);
 
-		int itemsInAPage = 10;
-		int startLimit = (boardPage-1)*itemsInAPage;
-		int articleCnt = articleService.getArticleCntById(boardId, searchType, searchMsg);
-		int totalPage = (int) Math.ceil((double) articleCnt / itemsInAPage);
-		int beginPage = Util.getBeginPage(boardPage);
-		int endPage = Util.getEndPage(boardPage);
-
 		if (board == null) {
 			return rq.jsReturnOnView("존재하지 않는 게시판입니다");
 		}
+		
+		int itemsInAPage = 10;
+		int pageSize = 10;
+		int startLimit = (boardPage-1)*itemsInAPage;
+		int articleCnt = articleService.getArticleCntById(boardId, searchType, searchMsg);
+		int totalPage = (int) Math.ceil((double) articleCnt / itemsInAPage);
+		int beginPage = Util.getBeginPage(boardPage, pageSize);
+		int endPage = Util.getEndPage(boardPage, pageSize);
+
 
 		List<Article> articles = articleService.getArticles(boardId, startLimit,itemsInAPage, searchType, searchMsg);
 
@@ -97,6 +99,7 @@ public class UsrHomeArticleController {
 		model.addAttribute("articleCnt", articleCnt);
 		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("boardPage", boardPage);
+		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("beginPage", beginPage);
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("searchType", searchType);
@@ -141,19 +144,8 @@ public class UsrHomeArticleController {
 			return rq.jsReturnOnView("존재하지 않는 게시글입니다");
 		}
 		
-		int checked;
-		
-		RecommendPoint recommend = recommendPointService.getRecommendByMemberId(id,rq.getLoginedMemberId());
-		
-		if(recommend == null) {
-			checked = 0;
-		}else {
-			checked = recommend.getPoint();
-		}
-		
 		model.addAttribute("article", article);
 		model.addAttribute("loginedMemberId", rq.getLoginedMemberId());
-		model.addAttribute("checked",checked);
 		return "usr/article/detail";
 	}
 
@@ -215,21 +207,6 @@ public class UsrHomeArticleController {
 		articleService.deleteArticle(id);
 
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제하였습니다", id), Util.f("list?boardId=%d&boardPage=1", boardId));
-	}
-	
-	@RequestMapping("/usr/article/doIncreaseRecommend")
-	@ResponseBody
-	public ResultData<Integer> doIncreaseRecommend(int id, int memberId) {
-		RecommendPoint recommend = recommendPointService.getRecommendByMemberId(id,memberId);
-		
-		if(recommend == null) {
-			recommendPointService.addRecommend(id, memberId);
-			return ResultData.from("S-1","좋아요",articleService.forPrintArticle(id).getPoint());
-		}
-		
-		recommendPointService.updateRecommend(id, memberId, recommend.getPoint());
-		
-		return ResultData.from("S-2","좋아요 업데이트",articleService.forPrintArticle(id).getPoint());
 	}
 
 }

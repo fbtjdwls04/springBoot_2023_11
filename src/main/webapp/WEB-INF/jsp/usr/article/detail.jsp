@@ -7,32 +7,71 @@
 	<%@ include file="../common/head.jsp" %>
   	
   	<script>
-  		let checkNum = ${checked};
-  	
-  		function increaseRecommend() {
-			$.ajax({
-				url: "doIncreaseRecommend",
-				method: "get",
-				data: {"id": ${article.id}, "memberId": ${rq.getLoginedMemberId()}},
-				dataType: "json",
-				success: function(data) {
-					$("#increaseRecommend").html(data.data);
-				},
-				error: function(xhr, status, error) {
-					console.error("ERROR : " + status + " - " + error);
+		$(document).ready(function(){
+			getRecommendPoint();
+			
+			$('#recommendBtn').click(function(){
+				
+				let recommendBtn = $('#recommendBtn');
+				
+				if (recommendBtn.hasClass('btn-active')) {
+					$.ajax({
+						url: "../recommendPoint/deleteRecommendPoint",
+						method: "get",
+						data: {
+								"relTypeCode" : "article",
+								"relId" : ${article.id }
+							},
+						dataType: "text",
+						success: function(data) {
+							console.log(data);
+						},
+						error: function(xhr, status, error) {
+							console.error("ERROR : " + status + " - " + error);
+						}
+					})
+				} else {
+					$.ajax({
+						url: "../recommendPoint/insertRecommendPoint",
+						method: "get",
+						data: {
+								"relTypeCode" : "article",
+								"relId" : ${article.id }
+							},
+						dataType: "text",
+						success: function(data) {
+							console.log(data);
+						},
+						error: function(xhr, status, error) {
+							console.error("ERROR : " + status + " - " + error);
+						}
+					})
 				}
+				
+				location.reload();
 			})
-			if(checkNum == 0){
-				$('.fa-heart').removeClass('fa-regular');
-				$('.fa-heart').addClass('fa-solid text-[red]');
-				checkNum = 1;				
-			}else{
-				$('.fa-heart').removeClass('fa-solid text-[red]');
-				$('.fa-heart').addClass('fa-regular');
-				checkNum = 0;	
+		})
+		
+		const getRecommendPoint = function(){
+				$.ajax({
+					url: "../recommendPoint/getRecommendPoint",
+					method: "get",
+					data: {
+							"relTypeCode" : "article",
+							"relId" : ${article.id }
+						},
+					dataType: "json",
+					success: function(data) {
+						if (data.success) {
+							$('#recommendBtn').addClass('btn-active');
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error("ERROR : " + status + " - " + error);
+					}
+				})
 			}
-		}
-  	</script>
+	</script>
   	
 	<section class="flex justify-center ">
 		<div class="container">
@@ -61,17 +100,9 @@
 					<th>추천</th>
 					<td>
 						<c:if test="${rq.getLoginedMemberId() != 0 }">
-							<button onclick="increaseRecommend();">
-								<c:if test="${checked == 0 }">
-									<i class="fa-heart fa-regular"></i>
-								</c:if>
-								<c:if test="${checked == 1 }">
-									<i class="fa-heart fa-solid text-[red]"></i>
-								</c:if>
-							</button>
+							<button id="recommendBtn" class="mr-8 btn-text-color btn btn-outline btn-xs">좋아요👍</button>
 						</c:if>
-							<span>좋아요 : </span>
-							<span id="increaseRecommend">${article.point}</span>
+						<span>${article.point}</span>
 					</td>
 				</tr>
 				<tr>

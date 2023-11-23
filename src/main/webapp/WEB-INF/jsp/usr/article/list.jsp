@@ -54,17 +54,17 @@
 		<c:set var="baseUri"
 			value="boardId=${board.id }&searchType=${searchType}&searchMsg=${searchMsg}"></c:set>
 		<!-- 페이지 처음으로 시작 -->
-		<c:if test="${beginPage > 10}">
+		<c:if test="${beginPage > pageSize}">
 			<a class="text-[20px] mx-6"
-				href="list?boardPage=1&${baseUri}"> <i
-				class="fa-solid fa-backward flex items-center"></i>
+				href="list?boardPage=1&${baseUri}"> 
+				<i class="fa-solid fa-backward flex items-center"></i>
 			</a>
 		</c:if>
 		<!-- 페이지 처음으로 끝 -->
 		<!-- 이전 화살표 시작 -->
 		<c:if test="${beginPage > 1}">
 			<a class="flex justify-center items-center"
-				href="list?boardPage=${beginPage-10}&${baseUri}">
+				href="list?boardPage=${beginPage-pageSize}&${baseUri}">
 				<i class="fa-solid fa-caret-left text-2xl"></i> <span>이전 | </span>
 			</a>
 		</c:if>
@@ -83,13 +83,13 @@
 		<!-- 다음 화살표 시작 -->
 		<c:if test="${endPage < totalPage }">
 			<a class="flex justify-center items-center"
-				href="list?boardPage=${beginPage+10}&${baseUri}">
+				href="list?boardPage=${beginPage+pageSize}&${baseUri}">
 				<span> | 다음</span> <i class="fa-solid fa-caret-right text-2xl"></i>
 			</a>
 		</c:if>
 		<!-- 다음 화살표 끝 -->
 		<!-- 페이지 끝으로 시작 -->
-		<c:if test="${beginPage + 10 < totalPage }">
+		<c:if test="${beginPage + pageSize < totalPage }">
 			<a class="text-[20px] mx-6"
 				href="list?boardPage=${totalPage}&${baseUri}">
 				<i class="fa-solid fa-forward flex items-center"></i>
