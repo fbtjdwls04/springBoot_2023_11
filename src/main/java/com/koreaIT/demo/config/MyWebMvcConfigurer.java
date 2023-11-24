@@ -1,6 +1,7 @@
 package com.koreaIT.demo.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -23,15 +24,28 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(beforeActionInterceptor).addPathPatterns("/**").excludePathPatterns("/resource/**");
-		registry.addInterceptor(needLoginInterceptor).addPathPatterns("/usr/article/write")
-				.addPathPatterns("/usr/article/doWrite").addPathPatterns("/usr/article/doDelete")
-				.addPathPatterns("/usr/article/doModify").addPathPatterns("/usr/member/doLogout")
-				.addPathPatterns("/usr/article/doIncreaseRecommend").addPathPatterns("/usr/reply/doWrite")
-				.addPathPatterns("/usr/reply/doDelete");
-		registry.addInterceptor(needLogoutInterceptor).addPathPatterns("/usr/member/login")
-				.addPathPatterns("/usr/member/doLogin").addPathPatterns("/usr/member/join")
-				.addPathPatterns("/usr/member/doJoin");
+		
+		InterceptorRegistration ir;
+		ir = registry.addInterceptor(beforeActionInterceptor);
+		ir.addPathPatterns("/**");
+		ir.addPathPatterns("/favicon.ico");
+		ir.excludePathPatterns("/resource/**");
+		
+		ir = registry.addInterceptor(needLoginInterceptor);
+		ir.addPathPatterns("/usr/article/write");
+		ir.addPathPatterns("/usr/article/doWrite");
+		ir.addPathPatterns("/usr/article/doDelete");
+		ir.addPathPatterns("/usr/article/doModify");
+		ir.addPathPatterns("/usr/member/doLogout");
+		ir.addPathPatterns("/usr/article/doIncreaseRecommend");
+		ir.addPathPatterns("/usr/reply/doWrite");
+		ir.addPathPatterns("/usr/reply/doDelete");
+		
+		ir = registry.addInterceptor(needLogoutInterceptor);
+		ir.addPathPatterns("/usr/member/login");
+		ir.addPathPatterns("/usr/member/doLogin");
+		ir.addPathPatterns("/usr/member/join");
+		ir.addPathPatterns("/usr/member/doJoin");
 	}
 
 }

@@ -147,13 +147,11 @@ public class UsrHomeArticleController {
 			return rq.jsReturnOnView("존재하지 않는 게시글입니다");
 		}
 		
-		if(rq.getLoginedMemberId() != 0) {
-			Member member = memberService.getMemberById(rq.getLoginedMemberId());
-			model.addAttribute("loginedMemberName", member.getNickname());
-		}
+		Member member = memberService.getMemberById(rq.getLoginedMemberId());
 		
 		List<Reply> replies = replyService.getReplies(id, "article");
 		
+		model.addAttribute("loginedMember", member);
 		model.addAttribute("article", article);
 		model.addAttribute("loginedMemberId", rq.getLoginedMemberId());
 		model.addAttribute("replies", replies);

@@ -134,7 +134,7 @@
 					<form action="/usr/reply/doWrite" onsubmit="replySubmit(this); return false;">
 						<input name="relId" value="${article.id }" type="hidden" />
 						<input name="relTypeCode" value="article" type="hidden" />
-						<div class="font-semibold ml-2 mb-2">${loginedMemberName}</div>
+						<div class="font-semibold ml-2 mb-2">${loginedMember.getNickname()}</div>
 						<div class="flex">
 							<textarea name="body" rows="1" class="textarea textarea-bordered w-full" placeholder="댓글을 입력해주세요"></textarea>
 							<button class="btn">작성</button>
@@ -155,11 +155,20 @@
 								<div class="whitespace-pre-wrap ml-2">${reply.body}</div>
 								<div class="ml-2">
 									<span>${reply.updateDate}</span>
-									<c:if test="${reply.memberId == rq.getLoginedMemberId() }">
-										<a class="btn btn-xs" href="/usr/reply/doDelete?id=${reply.id }&relId=${article.id}">삭제</a>
-									</c:if>
 								</div>
 							</div>
+								<!-- 수정 삭제 버튼 -->
+							<c:if test="${reply.memberId == rq.getLoginedMemberId() }">
+								<div class="dropdown ml-auto">
+									<button class="btn btn-square btn-ghost ml-auto">
+		      							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-5 h-5 stroke-current"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path></svg>
+		    						</button>
+		    						<ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-20">
+									    <li><a>수정</a></li>
+									    <li><a href="/usr/reply/doDelete?id=${reply.id }&relId=${article.id}">삭제</a></li>
+								  	</ul>
+								</div>
+							</c:if>
 						</div>
 					</c:forEach>
 				</div>
