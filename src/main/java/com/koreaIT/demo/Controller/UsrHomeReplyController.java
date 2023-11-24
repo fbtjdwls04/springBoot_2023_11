@@ -37,7 +37,7 @@ public class UsrHomeReplyController {
 	
 	@RequestMapping("/usr/reply/doDelete")
 	@ResponseBody
-	public String doDelete(int id, int relId) {
+	public String doDelete(int id) {
 
 		Reply reply =  replyService.getReplyById(id);
 
@@ -51,6 +51,25 @@ public class UsrHomeReplyController {
 		
 		replyService.deleteReply(id);
 		
-		return Util.jsReplace("댓글을 삭제하였습니다", Util.f("/usr/article/detail?id=%d", relId));
+		return Util.jsReplace("댓글을 삭제하였습니다", Util.f("/usr/article/detail?id=%d", reply.getRelId()));
+	}
+	
+	@RequestMapping("/usr/reply/doModify")
+	@ResponseBody
+	public String doModify(int id, String body) {
+
+		Reply reply =  replyService.getReplyById(id);
+
+		if (reply == null) {
+			return Util.jsHistoryBack("해당 댓글은 존재하지 않습니다");
+		}
+
+		if (rq.getLoginedMemberId() != reply.getMemberId()) {
+			return Util.jsHistoryBack("권한이 없습니다.");
+		}
+		
+		replyService.modifyReply(id, body);
+		
+		return Util.jsReplace("댓글을 수정하였습니다", Util.f("/usr/article/detail?id=%d", reply.getRelId()));
 	}
 }

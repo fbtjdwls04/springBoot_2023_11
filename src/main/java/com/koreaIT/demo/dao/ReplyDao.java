@@ -46,5 +46,13 @@ public interface ReplyDao {
 				WHERE id = #{id}
 			""")
 	public void deleteReply(int id);
+
+	@Update("""
+			UPDATE reply
+				SET body = #{body},
+				updateDate = NOW()
+				WHERE id = #{id}
+			""")
+	public void modifyReply(int id, String body);
 	
 }
