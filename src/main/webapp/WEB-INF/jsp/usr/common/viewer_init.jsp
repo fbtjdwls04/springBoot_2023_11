@@ -2,9 +2,10 @@
     pageEncoding="UTF-8"%>
     
 <script>
-	const viewer = new toastui.Editor({
+	const viewer = new Editor.factory({
 	    el: document.querySelector('#viewer'),
-	    height: 'auto'
+	    height: 'auto',
+	    viewer:true
 	});
  	
 </script>

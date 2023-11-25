@@ -72,7 +72,7 @@
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td><div id="editor"></div></td>
+					<td id="editor"></td>
 				</tr>
 			</table>
 			<div class="flex justify-end mr-4">

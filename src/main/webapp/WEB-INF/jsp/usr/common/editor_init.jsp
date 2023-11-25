@@ -2,8 +2,9 @@
     pageEncoding="UTF-8"%>
     
 <script>
-	const editor = new toastui.Editor({
+	const editor = new Editor({
 	    el: document.querySelector('#editor'),
+	    previewStyle: 'vertical',
 	    height: '500px'
 	});
 </script>

@@ -61,7 +61,7 @@
 			<!-- 게시물 -->
 			<table class="table">
 				<tr>
-					<th class="min-w-[100px]">번호</th>
+					<th>번호</th>
 					<td>${article.id}</td>
 				</tr>
 				<tr>
@@ -94,8 +94,11 @@
 					<td>${article.title }</td>
 				</tr>
 				<tr>
-					<th>내용</th>
-					<td id="viewer">${article.body }</td>
+					<td id="viewer" colspan="2" class="border">
+						<div class="p-4 border rounded-[10px]">
+							${article.body }
+						</div>
+					</td>
 				</tr>
 			</table>
 			<hr />
