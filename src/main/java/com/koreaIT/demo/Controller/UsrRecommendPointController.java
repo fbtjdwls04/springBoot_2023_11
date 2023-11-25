@@ -27,14 +27,14 @@ public class UsrRecommendPointController {
 
 	@RequestMapping("/usr/recommendPoint/doRecommendPoint")
 	@ResponseBody
-	public String doRecommendPoint(String relTypeCode, int relId, boolean recommendBtn) {
+	public boolean doRecommendPoint(String relTypeCode, int relId, boolean recommendBtn) {
 		
 		if(recommendBtn) {
 			recommendPointService.deleteRecommendPoint(rq.getLoginedMemberId(),relTypeCode, relId);
-			return "좋아요 취소";
+			return false;
 		}
 		
 		recommendPointService.insertRecommendPoint(rq.getLoginedMemberId(),relTypeCode, relId);
-		return "좋아요 성공";
+		return true;
 	}
 }

@@ -7,6 +7,23 @@
 <%@ include file="../common/head.jsp"%>
 
 	<script>
+		$(document).ready(function(){
+			$.ajax({
+				url: "getArticle",
+				method: "get",
+				data: {
+						"id" : ${article.id },
+					},
+				dataType: "json",
+				success: function(data) {
+					editor.setHTML(data.data.body);
+				},
+				error: function(xhr, status, error) {
+					console.error("ERROR : " + status + " - " + error);
+				}
+			})
+		}) 
+	
 		function modifySubmit(e) {
 	
 			if (e.title.value.trim().length == 0) {
@@ -14,10 +31,11 @@
 				e.title.focus();
 				return;
 			}
+   		 	
+   		 	e.body.value = editor.getHTML();
 	
 			if (e.body.value.trim().length == 0) {
 				alert('내용을 입력해주세요');
-				e.body.focus();
 				return;
 			}
 	
@@ -29,6 +47,7 @@
 		<form action="doModify"
 			onsubmit="modifySubmit(this); return false;" method="post">
 			<input name="id" type="hidden" value="${article.id }" />
+			<input name="body" type="hidden" />
 			<table class="table">
 				<tr>
 					<th>번호</th>
@@ -48,13 +67,12 @@
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td><input name="title" class="input input-bordered w-full max-w-xs" type="text" 
+					<td><input name="title" class="input input-bordered w-full" type="text" 
 						placeholder="제목을 입력해주세요" value="${article.title}" /></td>
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td><textarea name="body" class="textarea textarea-bordered" id="" cols="30"
-							rows="10" placeholder="내용을 입력해주세요">${article.body}</textarea></td>
+					<td><div id="editor"></div></td>
 				</tr>
 			</table>
 			<div class="flex justify-end mr-4">
@@ -62,5 +80,7 @@
 			</div>
 		</form>
 	</section>
-
+	
+<%@ include file="../common/toast_ui_init.jsp" %>	
+<%@ include file="../common/editor_init.jsp" %>	
 <%@ include file="../common/foot.jsp"%>

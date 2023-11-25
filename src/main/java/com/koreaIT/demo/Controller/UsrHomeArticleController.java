@@ -17,6 +17,7 @@ import com.koreaIT.demo.vo.Article;
 import com.koreaIT.demo.vo.Board;
 import com.koreaIT.demo.vo.Member;
 import com.koreaIT.demo.vo.Reply;
+import com.koreaIT.demo.vo.ResultData;
 import com.koreaIT.demo.vo.Rq;
 
 import jakarta.servlet.http.Cookie;
@@ -59,7 +60,6 @@ public class UsrHomeArticleController {
 		}
 
 		title = Util.cleanText(title);
-		body = Util.cleanText(body);
 
 		articleService.writeArticle(rq.getLoginedMemberId(), boardId, title, body);
 
@@ -181,7 +181,6 @@ public class UsrHomeArticleController {
 	public String doModify(int id, String title, String body) {
 
 		title = Util.cleanText(title);
-		body = Util.cleanText(body);
 
 		Article article = articleService.getArticleById(id);
 
@@ -217,6 +216,19 @@ public class UsrHomeArticleController {
 		articleService.deleteArticle(id);
 
 		return Util.jsReplace(Util.f("%d번 게시물을 삭제하였습니다", id), Util.f("list?boardId=%d&boardPage=1", boardId));
+	}
+	
+	@RequestMapping("/usr/article/getArticle")
+	@ResponseBody
+	public ResultData<Article> getArticle(int id) {
+
+		Article article = articleService.getArticleById(id);
+
+		if (article == null) {
+			return ResultData.from("F-1", "데이터 로드 실패");
+		}
+
+		return ResultData.from("F-1", "데이터 로드 실패",article);
 	}
 
 }

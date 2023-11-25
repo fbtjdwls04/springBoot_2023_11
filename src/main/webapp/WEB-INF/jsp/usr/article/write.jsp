@@ -2,9 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-	<c:set var="pageTitle" value="ARTICLE WRITE" />
-	   	
-	<%@ include file="../common/head.jsp" %>
+<c:set var="pageTitle" value="ARTICLE WRITE" />
+   	
+<%@ include file="../common/head.jsp" %>
+	
    	<script>
    		function writeSubmit(e) {
 			
@@ -13,10 +14,11 @@
    				e.title.focus();
    				return;
    			}
-
+   		 	
+   		 	e.body.value = editor.getHTML();
+   		 	
    			if(e.body.value.trim().length == 0){
    				alert('내용을 입력해주세요');
-   				e.body.focus();
    				return;
    			}
    			
@@ -26,6 +28,7 @@
    	
 	<section class="container mx-auto flex justify-center">
 		<form action="doWrite" onsubmit="writeSubmit(this); return false;" method="post">
+			<input name="body" type="hidden"/>
 			<table class="table">
 				<tr>
 					<th>게시판</th>
@@ -42,11 +45,11 @@
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td><input name="title" class="input input-bordered w-full max-w-xs" type="text" placeholder="제목을 입력해주세요"/></td>
+					<td><input name="title" class="input input-bordered w-full " type="text" placeholder="제목을 입력해주세요"/></td>
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td><textarea name="body" class="textarea textarea-bordered" id="" cols="30" rows="10" placeholder="내용을 입력해주세요"></textarea></td>
+					<td><div id="editor"></div></td>
 				</tr>
 			</table>
 			<div class="flex justify-end">
@@ -55,4 +58,6 @@
 		</form>
 	</section>
 	
-	<%@ include file="../common/foot.jsp" %>
+<%@ include file="../common/toast_ui_init.jsp" %>	
+<%@ include file="../common/editor_init.jsp" %>	
+<%@ include file="../common/foot.jsp" %>

@@ -54,7 +54,6 @@
 					}
 				})
 			}
-		
 	</script>
   	
 	<section class="flex justify-center ">
@@ -96,7 +95,7 @@
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td class="whitespace-pre-wrap">${article.body }</td>
+					<td id="viewer">${article.body }</td>
 				</tr>
 			</table>
 			<hr />
@@ -137,8 +136,10 @@
 		}
 		/* 수정 입력칸 열기 */
 		const replyModify_getForm = function(id) {
+			/* 해당 댓글을 제외한 나머지는 댓글만 보이게 */
 			$('.reply').css("display", "flex");
 			$('.modifyReplyForm').css("display", "none");
+			/*  */
 			
 			$('#reply' + id).css("display", "none");
 			$('#modifyReplyForm' + id).css("display", "flex");
@@ -149,6 +150,7 @@
 			$('#reply' + id).css("display", "flex");
 			$('#modifyReplyForm' + id).css("display", "none");
 		}
+		
 	</script>
 	<!-- 댓글 -->
 	<section class="flex justify-center my-4">
@@ -215,4 +217,6 @@
 			</div>
 		</div>
 	</section>
+<%@ include file="../common/toast_ui_init.jsp" %>
+<%@ include file="../common/viewer_init.jsp" %>	
 <%@ include file="../common/foot.jsp" %>
