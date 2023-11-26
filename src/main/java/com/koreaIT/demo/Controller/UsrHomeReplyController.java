@@ -57,6 +57,12 @@ public class UsrHomeReplyController {
 	@RequestMapping("/usr/reply/doModify")
 	@ResponseBody
 	public String doModify(int id, String body) {
+		
+		if(body == null) {
+			Util.jsReplace("내용을 입력해주세요", Util.f("/usr/article/detail?id=%d", id));
+		}
+		
+		body = Util.cleanText(body);
 
 		Reply reply =  replyService.getReplyById(id);
 

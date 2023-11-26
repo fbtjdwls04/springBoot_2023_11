@@ -61,41 +61,28 @@
 			<!-- 게시물 -->
 			<table class="table">
 				<tr>
-					<th>번호</th>
-					<td>${article.id}</td>
+					<td>번호 : ${article.id}</td>
 				</tr>
 				<tr>
-					<th>작성일</th>
-					<td>${article.regDate.substring(2,16)}</td>
-				</tr>
-				<tr>
-					<th>수정일</th>
-					<td>${article.updateDate.substring(2,16) }</td>
-				</tr>
-				<tr>
-					<th>조회수</th>
-					<td>${article.hitCount }</td>
-				</tr>
-				<tr>
-					<th>작성자</th>
-					<td>${article.writerName}</td>
-				</tr>
-				<tr>
-					<th>추천</th>
 					<td>
-						<c:if test="${rq.getLoginedMemberId() != 0 }">
-							<button id="recommendBtn" class="mr-8 btn-text-color btn btn-outline btn-xs">좋아요👍</button>
-						</c:if>
-						<span>${article.point}</span>
+						<p class="text-bold text-3xl">${article.title }</p>
+						<br />
+						<b class="text-base">
+							<i class="fa-regular fa-user"></i>
+							${article.writerName}
+						</b>
+						&nbsp;
+						<span>${article.updateDate.substring(2,16) }</span>
+						&nbsp;
+						<span>조회 ${article.hitCount }</span>
+						&nbsp;
+						<span>추천 ${article.point}</span>
+						
 					</td>
 				</tr>
 				<tr>
-					<th>제목</th>
-					<td>${article.title }</td>
-				</tr>
-				<tr>
-					<td id="viewer" colspan="2" class="border">
-						<div class="p-4 border rounded-[10px]">
+					<td id="viewer">
+						<div>
 							${article.body }
 						</div>
 					</td>
@@ -104,7 +91,6 @@
 			<hr />
 			<!-- 수정 삭제버튼 시작 -->
 			<div class="flex mt-[20px]">
-				<button class="btn btn-outline btn-s" onclick="history.back()">뒤로가기</button>
 				<c:if test="${loginedMemberId == article.memberId }">
 					<button class="btn btn-outline btn-s ml-2"><a href="modify?id=${article.id }">수정</a></button>
 					<button class="btn btn-outline btn-s ml-2" onclick="if(confirm('${article.id }번 글을 삭제하시겠습니까?')) location.replace('doDelete?id=${article.id}');">삭제</button>
@@ -139,7 +125,7 @@
 		}
 		/* 수정 입력칸 열기 */
 		const replyModify_getForm = function(id) {
-			/* 해당 댓글을 제외한 나머지는 댓글만 보이게 */
+			/* 해당 댓글을 제외한 나머지는 댓글만 보이게 (수정 입력칸 여러개 안켜지게) */
 			$('.reply').css("display", "flex");
 			$('.modifyReplyForm').css("display", "none");
 			/*  */
@@ -158,8 +144,14 @@
 	<!-- 댓글 -->
 	<section class="flex justify-center my-4">
 		<div class="container">
-			<h2 class="text-[20px] p-4">댓글 ${replies.size() }</h2>
-			<div class=" border p-10 rounded-[10px]">
+			<div class="p-4">
+				<c:if test="${rq.getLoginedMemberId() != 0 }">
+					<button id="recommendBtn" class="mr-4 btn-text-color btn btn-sm">좋아요👍</button>
+				</c:if>
+				<span>댓글 ${replies.size() }</span>
+			</div>
+			<div class="border px-10 rounded-[10px]">
+				<h2 class="text-2xl py-4">댓글</h2>
 				<!-- 댓글 입력창 -->
 				<c:if test="${rq.getLoginedMemberId() != 0 }">
 					<form action="/usr/reply/doWrite" onsubmit="replyWriteSubmit(this); return false;">
@@ -179,7 +171,7 @@
 				<!-- 댓글 리스트 -->
 				<div class="mt-8">
 					<c:forEach var="reply" items="${replies }">
-						<div id="reply${reply.id }" class="reply flex mt-4 border-b-2">
+						<div id="reply${reply.id }" class="reply flex mt-4">
 							<div class="w-[50px]"></div>
 							<div>
 								<div class="font-semibold">${reply.writerName }</div>
