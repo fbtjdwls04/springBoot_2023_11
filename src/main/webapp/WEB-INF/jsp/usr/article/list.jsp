@@ -11,7 +11,7 @@
 		<c:if test="${searchType != null and searchType != ''}">${searchMsg } (으)로 검색된 </c:if>
 		게시물 수 : ${articleCnt }
 	</p>
-	<table class="table text-[16px] text-center">
+	<table class="table text-[16px] text-center table-fixed">
 		<thead>
 			<tr>
 				<th width="150">번호</th>
@@ -27,9 +27,9 @@
 			<c:forEach var="article" items="${articles}">
 				<tr>
 					<td>${article.id}</td>
-					<td class="hover:underline">
+					<td class="hover:underline truncate">
 						<a href="detail?id=${article.id}">
-							${article.title}
+							<span>${article.title}</span>
 							<c:if test="${article.replyCnt > 0 }">
 								<span class="text-[red]">[${article.replyCnt }]</span>
 							</c:if>
@@ -48,7 +48,7 @@
 	<c:if test="${articleCnt == 0}">
 		<p class="text-[16px] text-center mt-4">
 			게시물이 없습니다.
-			</p]>
+		</p]>
 	</c:if>
 
 	<div class="flex justify-end">

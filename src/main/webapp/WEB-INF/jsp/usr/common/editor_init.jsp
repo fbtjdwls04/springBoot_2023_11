@@ -7,5 +7,4 @@
 	    previewStyle: 'vertical',
 	    height: '500px'
 	});
-	console.log(Editor)
 </script>

@@ -56,22 +56,21 @@
 			}
 	</script>
   	
-	<section class="flex justify-center ">
+	<section class="flex justify-center">
 		<div class="container">
 			<!-- 게시물 -->
-			<table class="table">
+			<table class="table table-fixed break-words" >
 				<tr>
 					<td>번호 : ${article.id}</td>
 				</tr>
 				<tr>
 					<td>
-						<p class="text-bold text-3xl">${article.title }</p>
+						<p class="text-bold text-3xl" >${article.title }</p>
 						<br />
-						<b class="text-base">
+						<p class="text-base font-bold">
 							<i class="fa-regular fa-user"></i>
 							${article.writerName}
-						</b>
-						&nbsp;
+						</p>
 						<span>${article.updateDate.substring(2,16) }</span>
 						&nbsp;
 						<span>조회 ${article.hitCount }</span>
@@ -82,9 +81,7 @@
 				</tr>
 				<tr>
 					<td id="viewer">
-						<div>
-							${article.body }
-						</div>
+						${article.body }
 					</td>
 				</tr>
 			</table>
