@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <script src="/resource/common.js" defer="defer"></script>
 <title>${pageTitle}</title>
+<link rel="shortcut icon" href="/resource/images/favicon.ico" />
 </head>
 <body>
 	<header class="fixed w-full bg-base-300 z-10">

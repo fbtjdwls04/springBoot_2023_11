@@ -8,7 +8,7 @@
    	
    	<section class="container mx-auto">
 		<div class="text-center">
-			<img class="mx-auto w-[800px] rounded-[20px]" src="/resource/funkinCat.png" alt="" />
+			<img class="mx-auto w-[800px] rounded-[20px]" src="/resource/images/funkinCat.png" alt="" />
 			<br />
 			<p class="text-4xl font-bold">Hi! Welcome! This is <span style="color: blue;">Spring boot</span> practice page</p>
 		</div>
