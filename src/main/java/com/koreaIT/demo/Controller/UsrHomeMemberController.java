@@ -1,6 +1,7 @@
 package com.koreaIT.demo.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -63,6 +64,43 @@ public class UsrHomeMemberController {
 		return Util.jsReplace("회원가입이 완료되었습니다", "/");
 	}
 	
+	@RequestMapping("/usr/member/memberChk")
+	@ResponseBody
+	public String memberChk(String loginId, String loginPw, String pwChk, String name, String nickname, String cellphoneNum, String email) {
+		
+		if(Util.empty(loginId)) {
+			return "아이디를 입력해주세요";
+		}
+		
+		if(Util.empty(loginPw)) {
+			return "비밀번호를 입력해주세요";
+		}
+		
+		if(Util.empty(name)) {
+			return "이름을 입력해주세요";
+		}
+		
+		if(Util.empty(nickname)) {
+			return "닉네임을 입력해주세요";
+		}
+		
+		if(Util.empty(cellphoneNum)) {
+			return "전화번호를 입력해주세요";
+		}
+		
+		if(Util.empty(email)) {
+			return "이메일을 입력해주세요";
+		}
+		
+		Member member = memberService.getMemberByLoginId(loginId);
+		
+		if(member != null) {
+			return "이미 사용중인 아이디입니다";
+		}
+		
+		return "합격";
+	}
+	
 	@RequestMapping("/usr/member/login")
 	public String login() {
 		
@@ -90,6 +128,20 @@ public class UsrHomeMemberController {
 		rq.login(member.getId());
 		
 		return Util.jsReplace(Util.f("%s님 환영합니다", member.getLoginId()), "/");
+	}
+	
+	@RequestMapping("/usr/member/myPage")
+	public String showMyPage(int id, Model model) {
+
+		if (rq.getLoginedMemberId() != id) {
+			return rq.jsReturnOnView("권한이 없습니다");
+		}
+		
+		Member loginedMember = memberService.getMemberById(id);
+		
+		model.addAttribute("loginedMember", loginedMember);
+		
+		return "/usr/member/myPage";
 	}
 	
 	@RequestMapping("/usr/member/doLogout")

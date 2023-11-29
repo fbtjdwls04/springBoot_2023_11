@@ -13,8 +13,6 @@
 <!-- 폰트어썸 -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 <link rel="stylesheet" href="/resource/common.css" />
-<!-- toast ui -->
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 <script src="/resource/common.js" defer="defer"></script>
 <title>${pageTitle}</title>
 <link rel="shortcut icon" href="/resource/images/favicon.ico" />
@@ -33,6 +31,7 @@
 					<li class="hover:underline"><a class="px-4" href="/usr/member/join">JOIN</a></li>
 				</c:if>
 				<c:if test="${rq.getLoginedMemberId() != 0}">
+					<li class="hover:underline"><a class="px-4" href="/usr/member/myPage?id=${rq.getLoginedMemberId() }">myPage</a></li>
 					<li class="hover:underline"><a class="px-4" href="/usr/member/doLogout">logout</a></li>
 				</c:if>
 			</ul>

@@ -24,29 +24,6 @@
 			})
 		}) 
 	
-		function modifySubmit(e) {
-	
-			if (e.title.value.trim().length == 0) {
-				alert('제목을 입력해주세요');
-				e.title.focus();
-				return;
-			}
-			
-			if(e.title.value.trim().length > 100){
-				alert('제목은 100자 이내로 작성해주세요 (현재 ' + e.title.value.trim().length + '자)');
-   				e.title.focus();
-   				return;
-   			}
-   		 	
-   		 	e.body.value = editor.getHTML();
-	
-			if (e.body.value.trim().length == 0) {
-				alert('내용을 입력해주세요');
-				return;
-			}
-	
-			e.submit();
-		}
 	</script>
 	
 	<section class="container mx-auto flex justify-center">

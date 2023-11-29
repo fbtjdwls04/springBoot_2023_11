@@ -6,32 +6,6 @@
    	
 <%@ include file="../common/head.jsp" %>
 	
-   	<script>
-   		function writeSubmit(e) {
-			
-   			if(e.title.value.trim().length == 0){
-   				alert('제목을 입력해주세요');
-   				e.title.focus();
-   				return;
-   			}
-
-   			if(e.title.value.trim().length > 100){
-   				alert('제목은 100자 이내로 작성해주세요 (현재 ' + e.title.value.trim().length + '자)');
-   				e.title.focus();
-   				return;
-   			}
-   		 	
-   		 	e.body.value = editor.getHTML();
-   		 	
-   			if(e.body.value.trim().length == 0){
-   				alert('내용을 입력해주세요');
-   				return;
-   			}
-   			
-   			e.submit();
-		}
-   	</script>
-   	
 	<section class="container mx-auto flex justify-center">
 		<form action="doWrite" onsubmit="writeSubmit(this); return false;" method="post">
 			<input name="body" type="hidden"/>
@@ -55,7 +29,7 @@
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td><div id="editor"></div></td>
+					<td id="editor"></td>
 				</tr>
 			</table>
 			<div class="flex justify-end">
