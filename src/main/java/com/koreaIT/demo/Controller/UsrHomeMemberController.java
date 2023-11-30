@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.koreaIT.demo.dao.util.Util;
 import com.koreaIT.demo.service.MemberService;
 import com.koreaIT.demo.vo.Member;
+import com.koreaIT.demo.vo.ResultData;
 import com.koreaIT.demo.vo.Rq;
 
 @Controller
@@ -64,41 +65,21 @@ public class UsrHomeMemberController {
 		return Util.jsReplace("회원가입이 완료되었습니다", "/");
 	}
 	
-	@RequestMapping("/usr/member/memberChk")
+	@RequestMapping("/usr/member/loginIdDupChk")
 	@ResponseBody
-	public String memberChk(String loginId, String loginPw, String pwChk, String name, String nickname, String cellphoneNum, String email) {
+	public ResultData<String> loginIdDupChk(String loginId) {
 		
 		if(Util.empty(loginId)) {
-			return "아이디를 입력해주세요";
-		}
-		
-		if(Util.empty(loginPw)) {
-			return "비밀번호를 입력해주세요";
-		}
-		
-		if(Util.empty(name)) {
-			return "이름을 입력해주세요";
-		}
-		
-		if(Util.empty(nickname)) {
-			return "닉네임을 입력해주세요";
-		}
-		
-		if(Util.empty(cellphoneNum)) {
-			return "전화번호를 입력해주세요";
-		}
-		
-		if(Util.empty(email)) {
-			return "이메일을 입력해주세요";
+			return ResultData.from("F-1", "아이디를 입력해주세요");
 		}
 		
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if(member != null) {
-			return "이미 사용중인 아이디입니다";
+			return ResultData.from("F-2",Util.f("%s 은(는) 이미 사용중인 아이디입니다", loginId)); 
 		}
 		
-		return "합격";
+		return ResultData.from("S-1", "사용 가능한 아이디입니다",loginId);
 	}
 	
 	@RequestMapping("/usr/member/login")

@@ -45,6 +45,17 @@ CREATE TABLE `recommendPoint`(
     `point` INT NOT NULL DEFAULT 0
 );
 
+CREATE TABLE reply(
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT UNSIGNED NOT NULL,
+    relTypeCode VARCHAR(20) NOT NULL,
+    relId INT UNSIGNED NOT NULL,
+    `body` TEXT NOT NULL
+);
+
+
 TRUNCATE article;
 
 INSERT INTO article

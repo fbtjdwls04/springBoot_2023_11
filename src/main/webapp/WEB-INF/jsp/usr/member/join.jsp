@@ -7,6 +7,8 @@
 	<%@ include file="../common/head.jsp" %>
    	
    	<script>
+   		let vaildLoginId = '';
+   	
    		const joinSubmit = function(e) {
    			
    			e.loginId.value = e.loginId.value.trim();
@@ -22,6 +24,14 @@
    				e.loginId.focus();
    				return;
    			}
+   			
+   			if(e.loginId.value != vaildLoginId){
+   				alert(e.loginId.value + '은(는) 사용할 수 없는 아이디입니다.');
+   				e.loginId.value = '';
+   				e.loginId.focus();
+   				return;
+   			}
+   			
    			if(e.loginPw.value.length == 0){
    				alert('비밀번호를 입력해주세요');
    				e.loginPw.focus();
@@ -58,17 +68,43 @@
    			e.submit();
 		}
    		
-   		const loginIdDupChk = function(e, name) {
+   		const loginIdDupChk = function(e) {
 			e.value = e.value.trim();
 			let chkMsg = $(e).next();
+			chkMsg.empty();
 			
 			if(e.value.length == 0){
 				chkMsg.addClass('text-red-500');
-				chkMsg.html('<span>' + name + ' 은(는) 필수 입력 정보입니다</span>');
+				chkMsg.html('<span>아이디는 필수 입력 정보입니다</span>');
 			}else{
 				chkMsg.removeClass('text-red-500');
 				chkMsg.html('');
 			}
+			
+			$.ajax({
+				url: "loginIdDupChk",
+				method: "get",
+				data: {
+						"loginId" : e.value
+					},
+				dataType: "json",
+				success: function(data) {
+					if(data.success){
+						chkMsg.removeClass('text-red-500');
+						chkMsg.addClass('text-green-500');
+						chkMsg.html(`<span>\${data.msg}</span>`);
+						vaildLoginId = e.value;
+					}else{
+						chkMsg.removeClass('text-green-500');
+						chkMsg.addClass('text-red-500');
+						chkMsg.html(`<span>\${data.msg}</span>`);
+						vaildLoginId = '';
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error("ERROR : " + status + " - " + error);
+				}
+			})
 		}
    	</script>
    	
@@ -85,42 +121,42 @@
 				<tr>
 					<th>비밀번호</th>
 					<td>
-						<input class="input input-bordered w-full" type="password" name="loginPw" onblur="loginIdDupChk(this, '비밀번호');" />
+						<input class="input input-bordered w-full" type="password" name="loginPw" />
 						<div class="h-2"></div>
 					</td>
 				</tr>
 				<tr>
 					<th>비밀번호 확인</th>
 					<td>
-						<input class="input input-bordered w-full" type="password" name="pwChk" onblur="loginIdDupChk(this, '비밀번호 확인');" />
+						<input class="input input-bordered w-full" type="password" name="pwChk"  />
 						<div class="h-2"></div>
 					</td>
 				</tr>
 				<tr>
 					<th>이름</th>
 					<td>
-						<input class="input input-bordered w-full" type="text" name="name" autocomplete="off" onblur="loginIdDupChk(this, '이름');">
+						<input class="input input-bordered w-full" type="text" name="name" autocomplete="off" >
 						<div class="h-2"></div>
 					</td>
 				</tr>
 				<tr>
 					<th>닉네임</th>
 					<td>
-						<input class="input input-bordered w-full" type="text" name="nickname" autocomplete="off" onblur="loginIdDupChk(this, '닉네임');"/>
+						<input class="input input-bordered w-full" type="text" name="nickname" autocomplete="off" />
 						<div class="h-2"></div>
 					</td>
 				</tr>
 				<tr>
 					<th>전화번호</th>
 					<td>
-						<input class="input input-bordered w-full" type="tel" name="cellphoneNum" autocomplete="off" onblur="loginIdDupChk(this, '전화번호');"/>
+						<input class="input input-bordered w-full" type="tel" name="cellphoneNum" autocomplete="off" />
 						<div class="h-2"></div>
 					</td>
 				</tr>
 				<tr>
 					<th>이메일</th>
 					<td>
-						<input class="input input-bordered w-full" type="email" name="email" autocomplete="off" onblur="loginIdDupChk(this, '이메일');"/>
+						<input class="input input-bordered w-full" type="email" name="email" autocomplete="off" />
 						<div class="h-2"></div>
 					</td>
 				</tr>
