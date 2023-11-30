@@ -20,4 +20,9 @@ public class UsrHomeController {
 	public String popUp() {
 		return "/usr/home/popUp";
 	}
+	
+	@RequestMapping("/usr/home/apiTest")
+	public String apiTest() {
+		return "/usr/home/apiTest";
+	}
 }

@@ -34,6 +34,7 @@
 					<li class="hover:underline"><a class="px-4" href="/usr/member/myPage?id=${rq.getLoginedMemberId() }">myPage</a></li>
 					<li class="hover:underline"><a class="px-4" href="/usr/member/doLogout">logout</a></li>
 				</c:if>
+				<li><a href="/usr/home/apiTest">API TEST</a></li>
 			</ul>
 		</div>
 	</header>
