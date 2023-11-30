@@ -25,4 +25,9 @@ public class UsrHomeController {
 	public String apiTest() {
 		return "/usr/home/apiTest";
 	}
+	
+	@RequestMapping("/usr/home/apiTest2")
+	public String apiTest2() {
+		return "/usr/home/apiTest2";
+	}
 }

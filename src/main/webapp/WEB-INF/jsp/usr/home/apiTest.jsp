@@ -9,7 +9,7 @@
 		
 		const response = await fetch(url);
 		const data = await response.json();
-		$('.test').empty().html(data.items[0]);
+		$('.test').empty().html(data.items[0].chrstnNm);
 		console.log(data);
 	}
 	
