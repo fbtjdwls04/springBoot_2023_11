@@ -12,6 +12,20 @@
 			<br />
 			<p class="text-4xl font-bold">Hi! Welcome! This is <span style="color: blue;">Spring boot</span> practice page</p>
 		</div>
+		
+		<div class="flex">
+			<div class="modal-exam"><span>모달예시</span></div>
+			<div class="w-[100px]"></div>
+			<div class="popUp-exam"><span>팝업예시</span></div>
+		</div>
+		
+		<div class="layer-bg"></div>
+		<div class="layer">
+			<h1>modal</h1>
+			<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus tenetur adipisci distinctio delectus culpa voluptatibus quaerat fuga explicabo natus quisquam. Labore aut sit officia illo velit molestiae placeat ipsa repellendus.</div>
+			<button class="close-btn-x">&times;</button>
+			<button class="close-btn btn btn-primary">close</button>
+		</div>
    	</section>
 	
 	<%@ include file="../common/foot.jsp" %>
